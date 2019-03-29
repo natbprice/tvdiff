@@ -20,8 +20,9 @@ devtools::install_github("natbprice/tvdiff")
 
 ## Example
 
-A simple example based on the function $f(x) = x - 0.5 $ with Gaussian
-noise of standard deviation
+A simple example based on the function ![f(x) = \\mid x - 0.5
+\\mid](https://latex.codecogs.com/png.latex?f%28x%29%20%3D%20%5Cmid%20x%20-%200.5%20%5Cmid
+"f(x) = \\mid x - 0.5 \\mid") with Gaussian noise of standard deviation
 0.05.
 
 <img src= "./man/figures/README-unnamed-chunk-2-1.svg"><img src= "./man/figures/README-unnamed-chunk-2-2.svg">

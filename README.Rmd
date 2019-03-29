@@ -1,5 +1,7 @@
 ---
-output: github_document
+output:
+  github_document:
+    pandoc_args: --webtex
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -41,7 +43,7 @@ devtools::install_github("natbprice/tvdiff")
 ```
 
 ## Example
-A simple example based on the function $f(x) = \mid x - 0.5 \mid $ with 
+A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with 
 Gaussian noise of standard deviation 0.05.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
