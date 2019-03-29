@@ -21,11 +21,63 @@ Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 
 ## Installation
 
-The **tvdiff** package is currently only available from Github.
+The **tvdiff** package is currently only available from Github.The package 
+depends on reticulate and requires Python to be installed.
 
-``` r
+```{r, eval = FALSE}
 devtools::install_github("natbprice/tvdiff")
 ```
+
+## Example
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=3, fig.width=6}
+library(tvdiff)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+# Load demo data
+data("smalldemodata")
+
+# Build dataframe
+smallEx <-
+  smalldemodata %>%
+  # Estimate derivative
+  mutate(dxdt =
+           TVRegDiffR(
+             data = obs,
+             iter = 1e3,
+             alph = 0.2,
+             scale = "small",
+             ep = 1e-6,
+             dx = 0.01
+           )[-1]) %>% 
+  # Simple numerical integration
+  mutate(dx = lead(x) - x,
+         pred = obs[1] + cumsum(dxdt*dx),
+         true = abs(x - 0.5)) %>% 
+  # Collect in long form
+  gather(key, value, -x, -dx)
+
+# Plot observed vs predicted
+ggplot(smallEx %>% 
+         filter(key != "dxdt"), 
+       aes(x = x, y = value, color = key, linetype = key)) +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "x",
+       y = "f(x)")
+
+# Plot derivative
+ggplot(smallEx %>% 
+         filter(key == "dxdt"), 
+       aes(x = x, y = value)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "x",
+       y = "f'(x)")
+```
+
 
 ## References
 Rick Chartrand, "Numerical differentiation of noisy, nonsmooth data," ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.

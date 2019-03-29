@@ -10,11 +10,17 @@ ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 
 ## Installation
 
-The **tvdiff** package is currently only available from Github.
+The **tvdiff** package is currently only available from Github.The
+package depends on reticulate and requires Python to be
+installed.
 
 ``` r
 devtools::install_github("natbprice/tvdiff")
 ```
+
+## Example
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
 
 ## References
 
