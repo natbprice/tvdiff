@@ -35,7 +35,7 @@ Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 
 ## Installation
 
-The **tvdiff** package is currently only available from Github.The package 
+The **tvdiff** package is currently only available from Github. The package 
 depends on reticulate and requires Python to be installed.
 
 ```{r, eval = FALSE}
@@ -44,7 +44,10 @@ devtools::install_github("natbprice/tvdiff")
 
 ## Example
 A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with 
-Gaussian noise of standard deviation 0.05.
+Gaussian noise of standard deviation 0.05. The derivative is estimated from the 
+noisy observations using Total Variation Regularized Differentiation. A
+prediction of the original function is obtained from the estimated derivative 
+through nummerical integration.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
 library(tvdiff)
@@ -90,7 +93,7 @@ ggplot(smallEx %>%
 ggplot(smallEx %>% 
          filter(key == "dxdt"), 
        aes(x = x, y = value)) +
-  geom_point() +
+  geom_line() +
   theme_minimal() +
   labs(x = "x",
        y = "f'(x)")
