@@ -105,35 +105,52 @@ ggplot(largeEx %>%
 ```{r}
 
 # Load data
-data("paleoDistance")
+data("paleo")
 
-xout <- seq(min(paleoDistance$sortVar), max(paleoDistance$sortVar), length.out = 700)
+# Linear interpolate data 
+xout <- seq(min(paleo$sortVar), max(paleo$sortVar), length.out = 700)
+paleoInterp <- 
+  paleo %>%
+  select(-cellID, -site) %>% 
+  rename(t = sortVar, y = value) %>% 
+  group_by(variable) %>% 
+  nest() %>% 
+  mutate(
+    t = purrr::map(data, ~ approx(.$t, .$y, xout = xout)$x, rule = 1),
+    y = purrr::map(data, ~ approx(.$t, .$y, xout = xout)$y, rule = 1)
+  ) %>%
+  dplyr::select(-data) %>%
+  unnest()
+
+# Calculate distance
+paleoDistance <- 
+  paleoInterp %>% 
+  group_by(variable) %>% 
+  mutate(dy = lead(y) - y,
+         dt = lead(t) - t) %>% 
+  group_by(t) %>% 
+  summarize(ds = sqrt(sum(dy^2))) %>% 
+  mutate(s = cumsum(ds)) %>% 
+  select(-ds) %>% 
+  na.omit()
+  
 
 # Build dataframe
 paleoEx <-
-  paleoDistance %>%
-  select(-cellID) %>% 
-  rename(t = sortVar) %>% 
-  nest() %>% 
-  mutate(
-    t = purrr::map(data, ~ approx(.$t, .$s, xout = xout)$x, rule = 1),
-    s = purrr::map(data, ~ approx(.$t, .$s, xout = xout)$y, rule = 1)
-  ) %>%
-  dplyr::select(-data) %>%
-  unnest() %>% 
+  paleoDistance %>% 
   mutate(dt = lead(t) - t) %>% 
   # Estimate derivative
-  mutate(dsdt.tvdiff =
+  mutate(dsdt =
            TVRegDiffR(
              data = s,
-             iter = 40L,
+             iter = 2e3,
              alph = 100,
-             scale = "large",
+             scale = "small",
              ep = 1e-6,
              dx = dt[1]
-           )) %>% 
+           )[-1]) %>% 
   # Simple numerical integration
-  mutate(pred = s[1] + cumsum(dsdt.tvdiff*dt)) %>% 
+  mutate(pred = s[1] + cumsum(dsdt*dt)) %>% 
   # Collect in long form
   gather(key, value, -t, -dt)
 
@@ -141,13 +158,17 @@ paleoEx <-
 ggplot(paleoEx %>% 
          filter(key %in% c("s", "pred")), 
        aes(x = t, y = value, color = key, linetype = key)) +
-  geom_line(size = 1.2)
+  geom_line(size = 1.2) +
+  labs(x = "time",
+       y = "cummulative change in state")
 
 # Plot derivative
 ggplot(paleoEx %>% 
-         filter(key %in% c("dsdt", "dsdt.tvdiff")), 
-       aes(x = t, y = value, color = key)) +
-  geom_point()
+         filter(key == "dsdt"), 
+       aes(x = t, y = value)) +
+  geom_point() +
+  labs(x = "time", 
+       y = "rate of change")
 
 
 ```
