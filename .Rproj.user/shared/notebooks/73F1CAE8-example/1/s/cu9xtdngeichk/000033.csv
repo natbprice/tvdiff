@@ -1,6 +1,0 @@
-"0",""
-"0","# Plot derivative"
-"0","ggplot(largeEx %>% "
-"0","         filter(key == ""dxdt""), "
-"0","       aes(x = x, y = value)) +"
-"0","  geom_point()"
