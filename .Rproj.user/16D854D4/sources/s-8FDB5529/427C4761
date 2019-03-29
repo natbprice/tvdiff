@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1553870864321.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "427C4761",
+    "lastKnownWriteTime" : 1553887104,
+    "last_content_update" : 1553887104980,
+    "path" : "~/tvdiff/R/TVRegDiffR.R",
+    "project_path" : "R/TVRegDiffR.R",
+    "properties" : {
+        "cursorPosition" : "114,25",
+        "scrollLine" : "113"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

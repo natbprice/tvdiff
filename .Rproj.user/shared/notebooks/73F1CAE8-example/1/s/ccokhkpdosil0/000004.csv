@@ -1,0 +1,129 @@
+"0",""
+"0","data(""largedemodata"")"
+"0",""
+"0","largeEx <-"
+"0","  largedemodata %>%"
+"0","  mutate(regDiff ="
+"0","           TVRegDiffR("
+"0","             data = obs,"
+"0","             iter = 40L,"
+"0","             alph = 1e-3,"
+"0","             scale = ""large"","
+"0","             ep = 1e-6,"
+"0","             dx = 1/82799"
+"0","           ))"
+"1","
+WARNING - convergence to tolerance not achieved!
+iteration  467: relative change = 6.462e-06, gradient norm = 6.228e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  468: relative change = 6.176e-06, gradient norm = 6.697e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  469: relative change = 5.911e-06, gradient norm = 7.388e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  470: relative change = 4.995e-06, gradient norm = 6.997e-02
+
+WARNING - conv"
+"1","ergence to tolerance not achieved!
+iteration  471: relative change = 4.226e-06, gradient norm = 9.656e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  472: relative change = 5.593e-06, gradient norm = 6.328e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  473: relative change = 3.440e-06, gradient norm = 7.093e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  474: relative change = 3.485e-06, gradient norm = 7.047e-02
+
+WARNING - convergence to toler"
+"1","ance not achieved!
+iteration  475: relative change = 5.477e-06, gradient norm = 6.362e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  476: relative change = 4.027e-06, gradient norm = 6.611e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  477: relative change = 3.771e-06, gradient norm = 1.745e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  478: relative change = 9.809e-06, gradient norm = 8.091e-02
+
+WARNING - convergence to tolerance not achieve"
+"1","d!
+iteration  479: relative change = 1.624e-05, gradient norm = 7.445e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  480: relative change = 1.072e-05, gradient norm = 8.000e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  481: relative change = 3.218e-05, gradient norm = 1.555e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  482: relative change = 1.172e-05, gradient norm = 1.257e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  4"
+"1","83: relative change = 1.855e-04, gradient norm = 3.738e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  484: relative change = 3.483e-04, gradient norm = 8.452e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  485: relative change = 8.882e-05, gradient norm = 5.677e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  486: relative change = 3.350e-05, gradient norm = 2.436e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  487: relative cha"
+"1","nge = 6.809e-05, gradient norm = 1.731e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  488: relative change = 6.929e-05, gradient norm = 8.204e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  489: relative change = 7.583e-05, gradient norm = 2.516e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  490: relative change = 8.804e-05, gradient norm = 2.099e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  491: relative change = 6.205e-05,"
+"1"," gradient norm = 8.383e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  492: relative change = 2.799e-05, gradient norm = 1.015e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  493: relative change = 2.962e-05, gradient norm = 3.340e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  494: relative change = 1.754e-05, gradient norm = 2.052e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  495: relative change = 1.029e-04, gradient norm ="
+"1"," 2.143e-01
+
+WARNING - convergence to tolerance not achieved!
+iteration  496: relative change = 1.040e-04, gradient norm = 7.065e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  497: relative change = 1.167e-04, gradient norm = 5.685e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  498: relative change = 1.003e-04, gradient norm = 6.058e-02
+
+WARNING - convergence to tolerance not achieved!
+iteration  499: relative change = 1.183e-04, gradient norm = 6.227e-02
+
+WA"
+"1","RNING - convergence to tolerance not achieved!
+iteration  500: relative change = 9.896e-05, gradient norm = 6.395e-02
+
+WARNING - convergence to tolerance not achieved!
+"
+"2","Error in py_call_impl(callable, dots$args, dots$keywords) : MemoryError: 
+"

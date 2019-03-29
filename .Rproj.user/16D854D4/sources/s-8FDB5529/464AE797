@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1553869621724.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2010878920",
+    "id" : "464AE797",
+    "lastKnownWriteTime" : 1553890791,
+    "last_content_update" : 1553890791623,
+    "path" : "~/tvdiff/vignettes/example.Rmd",
+    "project_path" : "vignettes/example.Rmd",
+    "properties" : {
+        "cursorPosition" : "106,11",
+        "last_setup_crc32" : "8FDB55299990457b",
+        "scrollLine" : "103"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
