@@ -5,17 +5,29 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
+library(knitr)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+local({
+  hook_plot = knit_hooks$get('plot')
+  knit_hooks$set(plot = function(x, options) {
+    x = paste(x, collapse = '.')
+    if (!grepl('\\.svg', x)) return(hook_plot(x, options))
+    # read the content of the svg image and write it out without <?xml ... ?>
+    paste0('<img src= "./', x, '">')
+  })
+})
 ```
 # tvdiff
 
 The **tvdiff** package is a simple R wrapper for the Python translation of the 
-Matlab TVDiff function. The package implements the methods found in 
+original Matlab code by Rick Chartrand. The package implements the methods found in 
 Rick Chartrand,"Numerical differentiation of noisy, nonsmooth data," ISRN 
 Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 
@@ -29,8 +41,10 @@ devtools::install_github("natbprice/tvdiff")
 ```
 
 ## Example
+A simple example based on the function $f(x) = \mid x - 0.5 \mid $ with 
+Gaussian noise of standard deviation 0.05.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=3, fig.width=6}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
 library(tvdiff)
 library(tidyr)
 library(dplyr)
@@ -65,6 +79,8 @@ ggplot(smallEx %>%
        aes(x = x, y = value, color = key, linetype = key)) +
   geom_line() +
   theme_minimal() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
   labs(x = "x",
        y = "f(x)")
 

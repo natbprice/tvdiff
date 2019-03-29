@@ -4,15 +4,15 @@
 # tvdiff
 
 The **tvdiff** package is a simple R wrapper for the Python translation
-of the Matlab TVDiff function. The package implements the methods found
-in Rick Chartrand,“Numerical differentiation of noisy, nonsmooth data,”
-ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
+of the original Matlab code by Rick Chartrand. The package implements
+the methods found in Rick Chartrand,“Numerical differentiation of noisy,
+nonsmooth data,” ISRN Applied Mathematics, Vol. 2011, Article ID 164564,
+2011.
 
 ## Installation
 
 The **tvdiff** package is currently only available from Github.The
-package depends on reticulate and requires Python to be
-installed.
+package depends on reticulate and requires Python to be installed.
 
 ``` r
 devtools::install_github("natbprice/tvdiff")
@@ -20,7 +20,11 @@ devtools::install_github("natbprice/tvdiff")
 
 ## Example
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
+A simple example based on the function $f(x) = x - 0.5 $ with Gaussian
+noise of standard deviation
+0.05.
+
+<img src= "./man/figures/README-unnamed-chunk-2-1.svg"><img src= "./man/figures/README-unnamed-chunk-2-2.svg">
 
 ## References
 
