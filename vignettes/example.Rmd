@@ -10,6 +10,11 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+library(tvdiff)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -20,10 +25,7 @@ knitr::opts_chunk$set(
 
 
 ```{r smallDemo, warning = FALSE, fig.width = 7}
-library(tvdiff)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
+
 
 # Load demo data
 data("smalldemodata")
