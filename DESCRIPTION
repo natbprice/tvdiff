@@ -14,8 +14,9 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    reticulate
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
-Imports: 
-    reticulate
+Imports:
+    Matrix
