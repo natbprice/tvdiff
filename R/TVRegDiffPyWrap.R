@@ -47,14 +47,16 @@
 #' @author
 #' Rick Chartrand (\email{rickc@@lanl.gov})
 #'
-#' R translation: Nathaniel Price  (\email{natbprice@@gmail.com})
+#' Python translation: Simone Sturniolo (\email{simonesturniolo@@gmail.com})
+#'
+#' R Wrapper: Nathaniel Price  (\email{natbprice@@gmail.com})
 #'
 #' @references
 #' Rick Chartrand, "Numerical differentiation of noisy, nonsmooth
 #' data," ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 #'
 #' @export
-TVRegDiffR <-
+TVRegDiffPyWrap <-
   function(data,
            iter,
            alph,
@@ -123,109 +125,28 @@ TVRegDiffR <-
     # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     # POSSIBILITY OF SUCH DAMAGE.
 
-    chop <- function(v){
-      v[-1]
+    # Get python code directory
+    pyDir <- system.file("python-code", package = "tvdiff")
+    if (pyDir == "") {
+      stop("Could not find `python-code`. Try re-installing `tvdiff`.", call. = FALSE)
     }
 
-    # Get the data size.
-    n = length(data)
+    # Source python code
+    source_python(file.path(pyDir, "tvregdiff.py"), envir = environment(), convert = T)
 
-    # Default checking. (u0 is done separately within each method.)
-    if(is.null(dx))   dx = 1.0 / n
-
-    # Different methods for small- and large-scale problems.
-    if (scale == 'small') {
-
-      # Construct differentiation matrix.
-      c1 = rep(1, n+1) / dx
-
-
-      D <-
-        bandSparse(n = n,
-                   m = n + 1,
-                   c(0, 1),
-                   diagonals = matrix(c(-c1, c1), ncol = 2))
-
-      DT <- t(D)
-
-      # Construct antidifferentiation operator and its adjoint.
-      A <- function(x) {
-        chop(cumsum(x) - 0.5 * (x + x[1])) * dx
-      }
-
-      AT <- function(w) {
-        (sum(w) - c(sum(w) / 2.0, cumsum(w) - w / 2.0)) * dx
-      }
-
-      # Default initialization is naive derivative
-
-      if (is.null(u0)) {
-        u0 <- c(0, diff(data), 0)
-      }
-
-      u = u0
-
-      # Since Au( 0 ) = 0, we need to adjust.
-      ofst = data[1]
-      # Precompute.
-      ATb = AT(ofst - data)        # input: size n
-
-      # Main loop.
-      for (ii in 1:(iter+1)){
-        # Diagonal matrix of weights, for linearizing E-L equation.
-        Q <- bandSparse(n = n, m = n, k = 0,
-                        diagonals = matrix( 1 / ( sqrt( ( D %*% u )^2 + ep )), ncol = 1))
-        # Linearized diffusion matrix, also approximation of Hessian.
-        L = dx * DT %*% Q %*% D
-
-        # Gradient of functional.
-        g = AT(A(u)) + ATb + alph * L %*% u
-
-        # Prepare to solve linear equation.
-        # Simple preconditioner
-        P <- alph * bandSparse(n = n + 1, m = n + 1, k = 0,
-                               diagonals = as.matrix(diag(L) + 1, ncol = 1))
-
-        linop <- function(v) alph * L %*% v + AT(A(v))
-
-        pcgResult = pcg(
-          Ax = linop,
-          b = g,
-          x0 = rep(0, length(g)),
-          tol = tol,
-          maxiter = maxit,
-          M = P
-        )
-        s <- pcgResult$x
-
-        # if diagflag:
-        # [s, info_i] = sparse.linalg.cg(
-        #   linop, g, x0=None, tol=tol, maxiter=maxit, callback=None,
-        #   M=P)
-        # print('iteration {0:4d}: relative change = {1:.3e}, '
-        #       'gradient norm = {2:.3e}\n'.format(ii,
-        #                                          np.linalg.norm(
-        #                                            s[0]) /
-        #                                            np.linalg.norm(u),
-        #                                          np.linalg.norm(g)))
-        # if (info_i > 0):
-        #   print("WARNING - convergence to tolerance not achieved!")
-        # elif (info_i < 0):
-        #   print("WARNING - illegal input or breakdown")
-        # else:
-        #   [s, info_i] = sparse.linalg.cg(
-        #     linop, g, x0=None, tol=tol, maxiter=maxit, callback=None,
-        #     M=P)
-        # Update solution.
-        plot(u)
-        u = u - s
-
-        # Display plot.
-        if (plotflag) {
-          plot(u)
-        }
-      }
-    }
+    # Call python function
+    u <- TVRegDiffPy(
+      data = data,
+      itern = as.integer(iter),
+      alph = alph,
+      scale = scale,
+      ep = ep,
+      dx = dx,
+      plotflag = plotflag,
+      diagflag = diagflag,
+      tol = tol,
+      maxit = maxit
+    )
 
     return(u)
   }
