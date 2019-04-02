@@ -28,15 +28,15 @@ local({
 ```
 # tvdiff
 
-The **tvdiff** package is a simple R wrapper for the Python translation of the 
-original Matlab code by Rick Chartrand. The package implements the methods found in 
-Rick Chartrand,"Numerical differentiation of noisy, nonsmooth data," ISRN 
-Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
+The **tvdiff** package is an R translation of the Matlab implementation of the 
+Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand.
+The package implements the methods found in Rick Chartrand,"Numerical 
+differentiation of noisy, nonsmooth data," ISRN Applied Mathematics, Vol. 2011,
+Article ID 164564, 2011.
 
 ## Installation
 
-The **tvdiff** package is currently only available from Github. The package 
-depends on reticulate and requires Python to be installed.
+The **tvdiff** package is currently only available from Github.
 
 ```{r, eval = FALSE}
 devtools::install_github("natbprice/tvdiff")
@@ -47,7 +47,7 @@ A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with
 Gaussian noise of standard deviation 0.05. The derivative is estimated from the 
 noisy observations using Total Variation Regularized Differentiation. A
 prediction of the original function is obtained from the estimated derivative 
-through nummerical integration.
+through numerical integration.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
 library(tvdiff)
@@ -93,7 +93,7 @@ ggplot(smallEx %>%
 ggplot(smallEx %>% 
          filter(key == "dxdt"), 
        aes(x = x, y = value)) +
-  geom_line() +
+  geom_point() +
   theme_minimal() +
   labs(x = "x",
        y = "f'(x)")
@@ -105,5 +105,5 @@ Rick Chartrand, "Numerical differentiation of noisy, nonsmooth data," ISRN Appli
 
 https://sites.google.com/site/dnartrahckcir/home/tvdiff-code
 
-R package based on a Python translation by Simone Sturniolo:
+Python translation by Simone Sturniolo:
 https://github.com/stur86/tvregdiff
