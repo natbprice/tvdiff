@@ -3,3 +3,4 @@
 export(TVRegDiffPyWrap)
 export(TVRegDiffR)
 export(pcg)
+import(Matrix)

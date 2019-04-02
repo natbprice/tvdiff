@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 
 
-```{r, warning = FALSE}
+```{r smallDemo, warning = FALSE, fig.width = 7}
 library(tvdiff)
 library(tidyr)
 library(dplyr)
@@ -35,7 +35,7 @@ smallEx <-
   mutate(dxdt =
            TVRegDiffR(
              data = obs,
-             iter = 1e3,
+             iter = 100,
              alph = 0.2,
              scale = "small",
              ep = 1e-6,
@@ -52,17 +52,21 @@ smallEx <-
 ggplot(smallEx %>% 
          filter(key != "dxdt"), 
        aes(x = x, y = value, color = key, linetype = key)) +
-  geom_line(size = 1.1)
+  geom_line() +
+  theme_minimal() +
+  theme(aspect.ratio = 1/2)
 
 # Plot derivative
 ggplot(smallEx %>% 
          filter(key == "dxdt"), 
        aes(x = x, y = value)) +
-  geom_point()
+  geom_point() +
+  theme_minimal() +
+  theme(aspect.ratio = 1/2)
 
 ```
 
-```{r}
+```{r largeDemo, fig.width = 7}
 
 # Load data
 data("largedemodata")
@@ -70,17 +74,18 @@ data("largedemodata")
 # Build dataframe
 largeEx <-
   largedemodata %>%
+  # Subsample data in order to use 'small' algorithm
   slice(seq(1, n(), 1e2)) %>% 
   # Estimate derivative
   mutate(dxdt =
            TVRegDiffR(
              data = obs,
              iter = 40L,
-             alph = 1e3,
-             scale = "large",
+             alph = 1e4,
+             scale = "small",
              ep = 1e-6,
              dx = 100
-           )) %>% 
+           )[-1]) %>% 
   # Simple numerical integration
   mutate(dx = lead(x) - x,
          pred = obs[1] + cumsum(dxdt*dx)) %>% 
@@ -91,18 +96,22 @@ largeEx <-
 ggplot(largeEx %>% 
          filter(key != "dxdt"), 
        aes(x = x, y = value, color = key, linetype = key)) +
-  geom_line(size = 1.2)
+  geom_line() +
+  theme_minimal() +
+  theme(aspect.ratio = 1/2)
 
 # Plot derivative
 ggplot(largeEx %>% 
          filter(key == "dxdt"), 
        aes(x = x, y = value)) +
-  geom_point()
+  geom_point() +
+  theme_minimal() +
+  theme(aspect.ratio = 1/2)
 
 
 ```
 
-```{r}
+```{r paleo, fig.width = 7}
 
 # Load data
 data("paleo")
@@ -114,13 +123,13 @@ paleoInterp <-
   select(-cellID, -site) %>% 
   rename(t = sortVar, y = value) %>% 
   group_by(variable) %>% 
-  nest() %>% 
+  tidyr::nest() %>% 
   mutate(
     t = purrr::map(data, ~ approx(.$t, .$y, xout = xout)$x, rule = 1),
     y = purrr::map(data, ~ approx(.$t, .$y, xout = xout)$y, rule = 1)
   ) %>%
   dplyr::select(-data) %>%
-  unnest()
+  tidyr::unnest()
 
 # Calculate distance
 paleoDistance <- 
@@ -143,7 +152,7 @@ paleoEx <-
   mutate(dsdt =
            TVRegDiffR(
              data = s,
-             iter = 2e3,
+             iter = 500,
              alph = 100,
              scale = "small",
              ep = 1e-6,
@@ -156,11 +165,13 @@ paleoEx <-
 
 # Plot observed vs predicted
 ggplot(paleoEx %>% 
-         filter(key %in% c("s", "pred")), 
+         filter(key %in% c("s", "pred")),
        aes(x = t, y = value, color = key, linetype = key)) +
-  geom_line(size = 1.2) +
+  geom_line() +
   labs(x = "time",
-       y = "cummulative change in state")
+       y = "cummulative change in state") +
+  theme_minimal() +
+  theme(aspect.ratio = 1/2)
 
 # Plot derivative
 ggplot(paleoEx %>% 
@@ -168,7 +179,9 @@ ggplot(paleoEx %>%
        aes(x = t, y = value)) +
   geom_point() +
   labs(x = "time", 
-       y = "rate of change")
+       y = "rate of change") +
+  theme_minimal() +
+  theme(aspect.ratio = 1/2)
 
 
 ```

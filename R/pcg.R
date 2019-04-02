@@ -30,6 +30,8 @@ pcg <-
            x0,
            maxiter = 1e3,
            tol = 1e-6) {
+
+    # Initialize variables
     r <- vector(mode = "list", length = maxiter)
     x <- vector(mode = "list", length = maxiter)
     z <- vector(mode = "list", length = maxiter)
