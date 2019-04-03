@@ -8,5 +8,3 @@ paleoDistance <- calculate_distanceTravelled(paleo)
 # Save data
 write_csv(paleo, "data-raw/paleo.csv")
 usethis::use_data(paleo, overwrite = TRUE)
-write_csv(paleoDistance, "data-raw/paleoDistance.csv")
-usethis::use_data(paleoDistance, overwrite = TRUE)

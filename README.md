@@ -3,6 +3,10 @@
 
 # tvdiff
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Travis build
+status](https://travis-ci.org/natbprice/tvdiff.svg?branch=master)](https://travis-ci.org/natbprice/tvdiff)
+
 The **tvdiff** package is an R translation of the Matlab implementation
 of the Total Variation Regularized Numerical Differentiation algorithm
 by Rick Chartrand. The package implements the methods found in Rick

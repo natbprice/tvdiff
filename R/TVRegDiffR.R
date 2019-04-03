@@ -54,6 +54,7 @@
 #' data," ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 #'
 #' @import Matrix
+#' @importFrom graphics plot
 #'
 #' @export
 TVRegDiffR <-
@@ -206,7 +207,7 @@ TVRegDiffR <-
       }
     } else if (scale == "large") {
 
-      error("Only small scale algorithm is implemented.")
+      stop("Only small scale algorithm is implemented.")
     }
 
     return(u)

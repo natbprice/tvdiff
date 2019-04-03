@@ -3,3 +3,4 @@
 export(TVRegDiffR)
 export(pcg)
 import(Matrix)
+importFrom(graphics,plot)
