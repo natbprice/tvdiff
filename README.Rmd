@@ -53,15 +53,22 @@ noisy observations using Total Variation Regularized Differentiation. A
 prediction of the original function is obtained from the estimated derivative 
 through numerical integration.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# load packages
 library(tvdiff)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
+```
 
-# Load demo data
+### Load demo data
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 data("smalldemodata")
+str(smalldemodata)
+```
 
+### Use `TVRegDiffR` to perform numerical integration on the demo data
+```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
 # Build dataframe
 smallEx <-
   smalldemodata %>%
