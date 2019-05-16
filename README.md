@@ -49,7 +49,7 @@ str(smalldemodata)
 smallEx <-
   smalldemodata %>%
   # Estimate derivative
-  mutate(dxdt =
+  mutate(dydx =
            TVRegDiffR(
              data = obs,
              iter = 1e3,
@@ -60,21 +60,20 @@ smallEx <-
            )[-1]) %>% 
   # Simple numerical integration
   mutate(dx = lead(x) - x,
-         pred = obs[1] + cumsum(dxdt*dx),
-         true = abs(x - 0.5)) %>% 
+         pred = obs[1] + cumsum(dydx*dx)) %>% 
   # Collect in long form
   gather(key, value, -x, -dx)
 
 # Plot observed vs predicted
 ggplot(smallEx %>% 
-         filter(key != "dxdt"), 
+         filter(key != "dydx"), 
        aes(x = x, y = value, color = key, linetype = key)) +
   geom_line() +
   theme_minimal() +
   theme(legend.title = element_blank(),
         legend.position = "bottom") +
   labs(x = "x",
-       y = "f(x)")
+       y = "y")
 ```
 
 <img src= "./man/figures/README-unnamed-chunk-4-1.svg">
@@ -83,12 +82,12 @@ ggplot(smallEx %>%
 
 # Plot derivative
 ggplot(smallEx %>% 
-         filter(key == "dxdt"), 
+         filter(key == "dydx"), 
        aes(x = x, y = value)) +
   geom_point() +
   theme_minimal() +
   labs(x = "x",
-       y = "f'(x)")
+       y = "dydx")
 ```
 
 <img src= "./man/figures/README-unnamed-chunk-4-2.svg">
