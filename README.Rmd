@@ -68,7 +68,7 @@ str(smalldemodata)
 ```
 
 ### Use `TVRegDiffR` to perform numerical integration on the demo data
-```{r, echo = FALSE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
+```{r, echo = TRUE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
 # Build dataframe
 smallEx <-
   smalldemodata %>%

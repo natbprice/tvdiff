@@ -29,10 +29,69 @@ A simple example based on the function ![f(x) = \\mid x - 0.5
 0.05. The derivative is estimated from the noisy observations using
 Total Variation Regularized Differentiation. A prediction of the
 original function is obtained from the estimated derivative through
-numerical
-integration.
+numerical integration.
 
-<img src= "./man/figures/README-unnamed-chunk-2-1.svg"><img src= "./man/figures/README-unnamed-chunk-2-2.svg">
+### Load demo data
+
+``` r
+data("smalldemodata")
+str(smalldemodata)
+#> Classes 'tbl_df', 'tbl' and 'data.frame':    100 obs. of  3 variables:
+#>  $ x   : num  0 0.0101 0.0202 0.0303 0.0404 ...
+#>  $ true: num  0.49 0.48 0.47 0.46 0.45 0.44 0.43 0.42 0.41 0.4 ...
+#>  $ obs : num  0.495 0.459 0.496 0.427 0.444 ...
+```
+
+### Use `TVRegDiffR` to perform numerical integration on the demo data
+
+``` r
+# Build dataframe
+smallEx <-
+  smalldemodata %>%
+  # Estimate derivative
+  mutate(dxdt =
+           TVRegDiffR(
+             data = obs,
+             iter = 1e3,
+             alph = 0.2,
+             scale = "small",
+             ep = 1e-6,
+             dx = 0.01
+           )[-1]) %>% 
+  # Simple numerical integration
+  mutate(dx = lead(x) - x,
+         pred = obs[1] + cumsum(dxdt*dx),
+         true = abs(x - 0.5)) %>% 
+  # Collect in long form
+  gather(key, value, -x, -dx)
+
+# Plot observed vs predicted
+ggplot(smallEx %>% 
+         filter(key != "dxdt"), 
+       aes(x = x, y = value, color = key, linetype = key)) +
+  geom_line() +
+  theme_minimal() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
+  labs(x = "x",
+       y = "f(x)")
+```
+
+<img src= "./man/figures/README-unnamed-chunk-4-1.svg">
+
+``` r
+
+# Plot derivative
+ggplot(smallEx %>% 
+         filter(key == "dxdt"), 
+       aes(x = x, y = value)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "x",
+       y = "f'(x)")
+```
+
+<img src= "./man/figures/README-unnamed-chunk-4-2.svg">
 
 ## References
 
