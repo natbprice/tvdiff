@@ -40,18 +40,19 @@ results with sharper jumps.}
 \item{dx}{Grid spacing, used in the definition of the derivative operators.
 Default is the reciprocal of the data size.}
 
-\item{plotflag}{Flag whether to display plot at each iteration. Default is 1
-(yes).  Useful, but adds significant running time.}
+\item{plotflag}{Flag whether to display plot at each iteration. Default is 0
+(no).  Useful, but adds significant running time.}
 
 \item{diagflag}{Flag whether to display diagnostics at each iteration.
-Default is 1 (yes).  Useful for diagnosing preconditioning problems.  When
+Default is 0 (no).  Useful for diagnosing preconditioning problems.  When
 tolerance is not met, an early iterate being best is more worrying than a
 large relative residual.}
 
-\item{tol}{R Version Only: Tolerance passed to scipy.sparse.linalg.cg}
+\item{tol}{R Version Only: Tolerance passed to preconditiond conjugate
+gradient solver \code{\link{pcg}}}
 
 \item{maxit}{R Version Only: Maximum iterations passed to
-scipy.sparse.linalg.cg}
+preconditiond conjugate gradient solver \code{\link{pcg}}}
 }
 \value{
 Estimate of the regularized derivative of data.  Due to different
@@ -59,18 +60,39 @@ grid assumptions, length( u ) = length( data ) + 1 if scale = 'small',
 otherwise length( u ) = length( data ).
 }
 \description{
-Estimate the derivative of noisy data using regularized differentiation.
+Estimate the derivative of noisy data using total variation regularized
+differentiation.
 }
-\details{
-This function is an R wrapper for a Python translation of the original Matlab
-code.
+\examples{
+# Load small demo data
+data("smalldemodata")
+
+# Unpack data
+x <- smalldemodata$x
+obs <- smalldemodata$obs
+true <- smalldemodata$true
+dydx_true <- rep(-1, length(x))
+dydx_true[x > 0.5] <- 1
+dx <- x[2] - x[1]
+
+# Extimate derivative
+dydx <- TVRegDiffR(
+  data = obs,
+  iter = 100,
+  alph = 0.2,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx
+)
+dydx <- dydx[-1]
+
 }
 \references{
 Rick Chartrand, "Numerical differentiation of noisy, nonsmooth
 data," ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 }
 \author{
-Rick Chartrand (\email{rickc@lanl.gov})
-
 R translation: Nathaniel Price  (\email{natbprice@gmail.com})
+
+Original Matlab Code: Rick Chartrand (\email{rickc@lanl.gov})
 }

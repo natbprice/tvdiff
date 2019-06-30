@@ -1,6 +1,6 @@
 #' Preconditioned conjugate gradient method solver
 #'
-#' Solve system of linear equations $Ax = b$
+#' Solve system of linear equations \eqn{Ax = b}
 #'
 #' @param Ax function that takes argument x and returns matrix product A*x
 #' @param b right hand side of the linear system

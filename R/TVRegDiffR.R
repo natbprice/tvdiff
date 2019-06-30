@@ -1,9 +1,7 @@
 #' Total Variation Regularized Numerical Differentiation (TVDiff)
 #'
-#' Estimate the derivative of noisy data using regularized differentiation.
-#'
-#' This function is an R wrapper for a Python translation of the original Matlab
-#' code.
+#' Estimate the derivative of noisy data using total variation regularized
+#' differentiation.
 #'
 #' @param data Vector of data to be differentiated.
 #' @param iter Number of iterations to run the main loop. A stopping condition
@@ -30,24 +28,48 @@
 #' results with sharper jumps.
 #' @param dx Grid spacing, used in the definition of the derivative operators.
 #' Default is the reciprocal of the data size.
-#' @param plotflag Flag whether to display plot at each iteration. Default is 1
-#'  (yes).  Useful, but adds significant running time.
+#' @param plotflag Flag whether to display plot at each iteration. Default is 0
+#'  (no).  Useful, but adds significant running time.
 #' @param diagflag Flag whether to display diagnostics at each iteration.
-#' Default is 1 (yes).  Useful for diagnosing preconditioning problems.  When
+#' Default is 0 (no).  Useful for diagnosing preconditioning problems.  When
 #' tolerance is not met, an early iterate being best is more worrying than a
 #' large relative residual.
-#' @param tol R Version Only: Tolerance passed to scipy.sparse.linalg.cg
+#' @param tol R Version Only: Tolerance passed to preconditiond conjugate
+#' gradient solver \code{\link{pcg}}
 #' @param maxit R Version Only: Maximum iterations passed to
-#' scipy.sparse.linalg.cg
+#' preconditiond conjugate gradient solver \code{\link{pcg}}
 #'
 #' @return Estimate of the regularized derivative of data.  Due to different
 #' grid assumptions, length( u ) = length( data ) + 1 if scale = 'small',
 #' otherwise length( u ) = length( data ).
 #'
-#' @author
-#' Rick Chartrand (\email{rickc@@lanl.gov})
+#' @examples
+#' # Load small demo data
+#' data("smalldemodata")
 #'
+#' # Unpack data
+#' x <- smalldemodata$x
+#' obs <- smalldemodata$obs
+#' true <- smalldemodata$true
+#' dydx_true <- rep(-1, length(x))
+#' dydx_true[x > 0.5] <- 1
+#' dx <- x[2] - x[1]
+#'
+#' # Extimate derivative
+#' dydx <- TVRegDiffR(
+#'   data = obs,
+#'   iter = 100,
+#'   alph = 0.2,
+#'   scale = "small",
+#'   ep = 1e-6,
+#'   dx = dx
+#' )
+#' dydx <- dydx[-1]
+#'
+#' @author
 #' R translation: Nathaniel Price  (\email{natbprice@@gmail.com})
+#'
+#' Original Matlab Code: Rick Chartrand (\email{rickc@@lanl.gov})
 #'
 #' @references
 #' Rick Chartrand, "Numerical differentiation of noisy, nonsmooth
@@ -69,62 +91,6 @@ TVRegDiffR <-
            diagflag = 0,
            tol = 1e-4,
            maxit = 200) {
-
-
-    ## Copyright notice:
-    # Copyright 2010. Los Alamos National Security, LLC. This material
-    # was produced under U.S. Government contract DE-AC52-06NA25396 for
-    # Los Alamos National Laboratory, which is operated by Los Alamos
-    # National Security, LLC, for the U.S. Department of Energy. The
-    # Government is granted for, itself and others acting on its
-    # behalf, a paid-up, nonexclusive, irrevocable worldwide license in
-    # this material to reproduce, prepare derivative works, and perform
-    # publicly and display publicly. Beginning five (5) years after
-    # (March 31, 2011) permission to assert copyright was obtained,
-    # subject to additional five-year worldwide renewals, the
-    # Government is granted for itself and others acting on its behalf
-    # a paid-up, nonexclusive, irrevocable worldwide license in this
-    # material to reproduce, prepare derivative works, distribute
-    # copies to the public, perform publicly and display publicly, and
-    # to permit others to do so. NEITHER THE UNITED STATES NOR THE
-    # UNITED STATES DEPARTMENT OF ENERGY, NOR LOS ALAMOS NATIONAL
-    # SECURITY, LLC, NOR ANY OF THEIR EMPLOYEES, MAKES ANY WARRANTY,
-    # EXPRESS OR IMPLIED, OR ASSUMES ANY LEGAL LIABILITY OR
-    # RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS, OR USEFULNESS OF
-    # ANY INFORMATION, APPARATUS, PRODUCT, OR PROCESS DISCLOSED, OR
-    # REPRESENTS THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED
-    # RIGHTS.
-
-    ## BSD License notice:
-    # Redistribution and use in source and binary forms, with or without
-    # modification, are permitted provided that the following conditions
-    # are met:
-    #
-    #      Redistributions of source code must retain the above
-    #      copyright notice, this list of conditions and the following
-    #      disclaimer.
-    #      Redistributions in binary form must reproduce the above
-    #      copyright notice, this list of conditions and the following
-    #      disclaimer in the documentation and/or other materials
-    #      provided with the distribution.
-    #      Neither the name of Los Alamos National Security nor the names of its
-    #      contributors may be used to endorse or promote products
-    #      derived from this software without specific prior written
-    #      permission.
-    #
-    # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-    # CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    # DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-    # CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-    # SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-    # LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
-    # USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-    # AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-    # LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-    # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    # POSSIBILITY OF SUCH DAMAGE.
 
     # Helper function
     chop <- function(v){

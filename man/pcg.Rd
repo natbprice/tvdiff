@@ -20,7 +20,7 @@ pcg(Ax, b, M, x0, maxiter = 1000, tol = 1e-06)
 \item{tol}{tolerance for convergence on norm(residual, "2")}
 }
 \description{
-Solve system of linear equations $Ax = b$
+Solve system of linear equations \eqn{Ax = b}
 }
 \examples{
 A <- matrix(c(4, 1, 1, 3), nrow = 2)
