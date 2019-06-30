@@ -36,7 +36,7 @@ numerical integration.
 ``` r
 data("smalldemodata")
 str(smalldemodata)
-#> Classes 'tbl_df', 'tbl' and 'data.frame':    100 obs. of  3 variables:
+#> 'data.frame':    100 obs. of  3 variables:
 #>  $ x   : num  0 0.0101 0.0202 0.0303 0.0404 ...
 #>  $ true: num  0.49 0.48 0.47 0.46 0.45 0.44 0.43 0.42 0.41 0.4 ...
 #>  $ obs : num  0.495 0.459 0.496 0.427 0.444 ...
@@ -73,8 +73,9 @@ pred <- obs[1] + cumsum(dydx*dx)
 
 ## References
 
-Rick Chartrand, “Numerical differentiation of noisy, nonsmooth data,”
-ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
+Rick Chartrand, “Numerical Differentiation of Noisy, Nonsmooth Data,”
+ISRN Applied Mathematics, vol. 2011, Article ID 164564, 11 pages, 2011.
+<https://doi.org/10.5402/2011/164564>.
 
 <https://sites.google.com/site/dnartrahckcir/home/tvdiff-code>
 

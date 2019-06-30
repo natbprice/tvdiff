@@ -11,9 +11,6 @@ vignette: >
 
 ```{r setup, include = FALSE}
 library(tvdiff)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -21,171 +18,109 @@ knitr::opts_chunk$set(
 )
 ```
 
+This vignette contains examples from the article "Numerical Differentiation of
+Noisy, Nonsmooth Data" by Rick Chartrand (http://dx.doi.org/10.5402/2011/164564)
 
+## A Simple Nonsmooth Example
+A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with 
+Gaussian noise of standard deviation 0.05. The derivative is estimated from the 
+noisy observations using Total Variation Regularized Differentiation. A
+prediction of the original function is obtained from the estimated derivative 
+through numerical integration.
 
+```{r smallDemo, warning = FALSE, fig.height=4, fig.width=6}
 
-```{r smallDemo, warning = FALSE, fig.width = 7}
-
-
-# Load demo data
+# Load small demo data 
 data("smalldemodata")
 
-# Build dataframe
-smallEx <-
-  smalldemodata %>%
-  # Estimate derivative
-  mutate(dxdt =
-           TVRegDiffR(
-             data = obs,
-             iter = 100,
-             alph = 0.2,
-             scale = "small",
-             ep = 1e-6,
-             dx = 0.01
-           )[-1]) %>% 
-  # Simple numerical integration
-  mutate(dx = lead(x) - x,
-         pred = obs[1] + cumsum(dxdt*dx),
-         true = abs(x - 0.5)) %>% 
-  # Collect in long form
-  gather(key, value, -x, -dx)
+# Unpack data
+x <- smalldemodata$x
+obs <- smalldemodata$obs
+true <- smalldemodata$true
+dydx_true <- rep(-1, length(x))
+dydx_true[x > 0.5] <- 1
+dx <- x[2] - x[1]
+
+# Extimate derivative
+dydx <- TVRegDiffR(
+  data = obs,
+  iter = 1e3,
+  alph = 0.2,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx
+  )
+dydx <- dydx[-1]
+
+# Prediction
+pred <- obs[1] + cumsum(dydx*dx)
 
 # Plot observed vs predicted
-ggplot(smallEx %>% 
-         filter(key != "dxdt"), 
-       aes(x = x, y = value, color = key, linetype = key)) +
-  geom_line() +
-  theme_minimal() +
-  theme(aspect.ratio = 1/2)
+plot(x, obs, pch = 20, col = "#57575F", ylab = "y")
+lines(x, pred, col = "#CA3542", lty = 2, lwd = 2)
+lines(x, true, col = "#27647B", lty = 1, lwd = 2)
+legend("bottomleft", 
+       legend = c("Predicted", "True"),
+       col = c("#CA3542", "#27647B"),
+       lty = 2:1,
+       cex = 0.8)
 
 # Plot derivative
-ggplot(smallEx %>% 
-         filter(key == "dxdt"), 
-       aes(x = x, y = value)) +
-  geom_point() +
-  theme_minimal() +
-  theme(aspect.ratio = 1/2)
+plot(x, dydx, pch = 20, ylim = c(-1,1), col = "#CA3542", ylab = expression(dy/dx))
+points(x, dydx_true, col = "#27647B", pch = 20)
+legend("topleft", 
+       legend = c("Predicted", "True"),
+       col = c("#CA3542", "#27647B"),
+       pch = 20,
+       cex = 0.8)
 
 ```
 
-```{r largeDemo, fig.width = 7}
+## Respirometry Data 
+An example based on raw oxygen consumption data.
+
+```{r largeDemo, fig.height=4, fig.width=6}
 
 # Load data
 data("largedemodata")
 
-# Build dataframe
-largeEx <-
-  largedemodata %>%
-  # Subsample data in order to use 'small' algorithm
-  slice(seq(1, n(), 1e2)) %>% 
-  # Estimate derivative
-  mutate(dxdt =
-           TVRegDiffR(
-             data = obs,
-             iter = 40L,
-             alph = 1e4,
-             scale = "small",
-             ep = 1e-6,
-             dx = 100
-           )[-1]) %>% 
-  # Simple numerical integration
-  mutate(dx = lead(x) - x,
-         pred = obs[1] + cumsum(dxdt*dx)) %>% 
-  # Collect in long form
-  gather(key, value, -x, -dx)
+# Subsample data in order to use 'small' algorithm
+ind <- seq(1, nrow(largedemodata), 1e2)
+largedemodata <- largedemodata[ind, ]
+
+# Unpack data
+x <- largedemodata$x
+obs <- largedemodata$obs
+dx <- x[2] - x[1]
+
+# Extimate derivative
+dydx <- TVRegDiffR(
+  data = obs,
+  iter = 40,
+  alph = 1e4,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx
+  )
+dydx <- dydx[-1]
+
+# Prediction
+pred <- obs[1] + cumsum(dydx*dx)
 
 # Plot observed vs predicted
-ggplot(largeEx %>% 
-         filter(key != "dxdt"), 
-       aes(x = x, y = value, color = key, linetype = key)) +
-  geom_line() +
-  theme_minimal() +
-  theme(aspect.ratio = 1/2)
+plot(x, obs, pch = 20, col = "#57575F", xlab = "x", ylab = "y")
+lines(x, pred, col = "#CA3542", lty = 2, lwd = 2)
+legend("topleft", 
+       legend = c("Predicted"),
+       col = c("#CA3542"),
+       lty = 2:1,
+       cex = 0.8)
 
 # Plot derivative
-ggplot(largeEx %>% 
-         filter(key == "dxdt"), 
-       aes(x = x, y = value)) +
-  geom_point() +
-  theme_minimal() +
-  theme(aspect.ratio = 1/2)
-
+plot(x, dydx, pch = 20, col = "#CA3542", ylab = expression(dy/dx))
 
 ```
 
-```{r paleo, fig.width = 7}
 
-# Load data
-data("paleo")
-
-# Linear interpolate data 
-xout <- seq(min(paleo$sortVar), max(paleo$sortVar), length.out = 700)
-paleoInterp <- 
-  paleo %>%
-  select(-cellID, -site) %>% 
-  rename(t = sortVar, y = value) %>% 
-  group_by(variable) %>% 
-  tidyr::nest() %>% 
-  mutate(
-    t = purrr::map(data, ~ approx(.$t, .$y, xout = xout)$x, rule = 1),
-    y = purrr::map(data, ~ approx(.$t, .$y, xout = xout)$y, rule = 1)
-  ) %>%
-  dplyr::select(-data) %>%
-  tidyr::unnest()
-
-# Calculate distance
-paleoDistance <- 
-  paleoInterp %>% 
-  group_by(variable) %>% 
-  mutate(dy = lead(y) - y,
-         dt = lead(t) - t) %>% 
-  group_by(t) %>% 
-  summarize(ds = sqrt(sum(dy^2))) %>% 
-  mutate(s = cumsum(ds)) %>% 
-  select(-ds) %>% 
-  na.omit()
-  
-
-# Build dataframe
-paleoEx <-
-  paleoDistance %>% 
-  mutate(dt = lead(t) - t) %>% 
-  # Estimate derivative
-  mutate(dsdt =
-           TVRegDiffR(
-             data = s,
-             iter = 500,
-             alph = 100,
-             scale = "small",
-             ep = 1e-6,
-             dx = dt[1]
-           )[-1]) %>% 
-  # Simple numerical integration
-  mutate(pred = s[1] + cumsum(dsdt*dt)) %>% 
-  # Collect in long form
-  gather(key, value, -t, -dt)
-
-# Plot observed vs predicted
-ggplot(paleoEx %>% 
-         filter(key %in% c("s", "pred")),
-       aes(x = t, y = value, color = key, linetype = key)) +
-  geom_line() +
-  labs(x = "time",
-       y = "cummulative change in state") +
-  theme_minimal() +
-  theme(aspect.ratio = 1/2)
-
-# Plot derivative
-ggplot(paleoEx %>% 
-         filter(key == "dsdt"), 
-       aes(x = t, y = value)) +
-  geom_point() +
-  labs(x = "time", 
-       y = "rate of change") +
-  theme_minimal() +
-  theme(aspect.ratio = 1/2)
-
-
-```
 
 

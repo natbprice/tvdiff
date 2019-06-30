@@ -92,7 +92,7 @@ pred <- obs[1] + cumsum(dydx*dx)
 
 ```{r plot, echo = FALSE, dev = 'svg', fig.height=4, fig.width=6}
 # Plot observed vs predicted
-plot(x, obs, pch = 20, col = "#57575F")
+plot(x, obs, pch = 20, col = "#57575F", ylab = "y")
 lines(x, pred, col = "#CA3542", lty = 2, lwd = 2)
 lines(x, true, col = "#27647B", lty = 1, lwd = 2)
 legend("bottomleft", 
@@ -102,7 +102,12 @@ legend("bottomleft",
        cex = 0.8)
 
 # Plot derivative
-plot(x, dydx, pch = 20, ylim = c(-1,1), col = "#CA3542")
+plot(x,
+     dydx, 
+     pch = 20, 
+     ylim = c(-1,1), 
+     col = "#CA3542", 
+     ylab = expression(dy/dx))
 points(x, dydx_true, col = "#27647B", pch = 20)
 legend("topleft", 
        legend = c("Predicted", "True"),
@@ -113,7 +118,9 @@ legend("topleft",
 
 
 ## References
-Rick Chartrand, "Numerical differentiation of noisy, nonsmooth data," ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
+Rick Chartrand, “Numerical Differentiation of Noisy, Nonsmooth Data,”
+ISRN Applied Mathematics, vol. 2011, Article ID 164564, 11 pages, 2011.
+https://doi.org/10.5402/2011/164564.
 
 https://sites.google.com/site/dnartrahckcir/home/tvdiff-code
 
