@@ -92,6 +92,17 @@ TVRegDiffR <-
            tol = 1e-4,
            maxit = 200) {
 
+    # Check inputs
+    if(class(data) != "numeric" | length(data) == 1) {
+      stop("Input 'data' should be a numeric vector.")
+    }
+    if(class(iter) != "numeric" | length(iter) != 1 | iter[1] <= 0) {
+      stop("Input 'iter' should be a positive integer.")
+    }
+    if(class(alph) != "numeric" | length(alph) != 1 | alph[1] <= 0) {
+      stop("Input 'alph' should be a positive number.")
+    }
+
     # Helper function
     chop <- function(v){
       v[-1]
