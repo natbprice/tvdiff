@@ -45,52 +45,31 @@ str(smalldemodata)
 ### Use `TVRegDiffR` to perform numerical integration on the demo data
 
 ``` r
-# Build dataframe
-smallEx <-
-  smalldemodata %>%
-  # Estimate derivative
-  mutate(dydx =
-           TVRegDiffR(
-             data = obs,
-             iter = 1e3,
-             alph = 0.2,
-             scale = "small",
-             ep = 1e-6,
-             dx = 0.01
-           )[-1]) %>% 
-  # Simple numerical integration
-  mutate(dx = lead(x) - x,
-         pred = obs[1] + cumsum(dydx*dx)) %>% 
-  # Collect in long form
-  gather(key, value, -x, -dx)
 
-# Plot observed vs predicted
-ggplot(smallEx %>% 
-         filter(key != "dydx"), 
-       aes(x = x, y = value, color = key, linetype = key)) +
-  geom_line() +
-  theme_minimal() +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom") +
-  labs(x = "x",
-       y = "y")
+# Data
+x <- smalldemodata$x
+obs <- smalldemodata$obs
+true <- smalldemodata$true
+dydx_true <- rep(-1, length(x))
+dydx_true[x > 0.5] <- 1
+dx <- x[2] - x[1]
+
+# Extimate derivative
+dydx <- TVRegDiffR(
+  data = obs,
+  iter = 1e3,
+  alph = 0.2,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx
+  )
+dydx <- dydx[-1]
+
+# Prediction
+pred <- obs[1] + cumsum(dydx*dx)
 ```
 
-<img src= "./man/figures/README-unnamed-chunk-4-1.svg">
-
-``` r
-
-# Plot derivative
-ggplot(smallEx %>% 
-         filter(key == "dydx"), 
-       aes(x = x, y = value)) +
-  geom_point() +
-  theme_minimal() +
-  labs(x = "x",
-       y = "dydx")
-```
-
-<img src= "./man/figures/README-unnamed-chunk-4-2.svg">
+<img src= "./man/figures/README-plot-1.svg"><img src= "./man/figures/README-plot-2.svg">
 
 ## References
 

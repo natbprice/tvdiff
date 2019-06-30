@@ -56,9 +56,6 @@ through numerical integration.
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # load packages
 library(tvdiff)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
 ```
 
 ### Load demo data
@@ -68,45 +65,50 @@ str(smalldemodata)
 ```
 
 ### Use `TVRegDiffR` to perform numerical integration on the demo data
-```{r, echo = TRUE, message = FALSE, warning = FALSE, dev = 'svg', fig.height=3, fig.width=6}
-# Build dataframe
-smallEx <-
-  smalldemodata %>%
-  # Estimate derivative
-  mutate(dydx =
-           TVRegDiffR(
-             data = obs,
-             iter = 1e3,
-             alph = 0.2,
-             scale = "small",
-             ep = 1e-6,
-             dx = 0.01
-           )[-1]) %>% 
-  # Simple numerical integration
-  mutate(dx = lead(x) - x,
-         pred = obs[1] + cumsum(dydx*dx)) %>% 
-  # Collect in long form
-  gather(key, value, -x, -dx)
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
 
+# Data
+x <- smalldemodata$x
+obs <- smalldemodata$obs
+true <- smalldemodata$true
+dydx_true <- rep(-1, length(x))
+dydx_true[x > 0.5] <- 1
+dx <- x[2] - x[1]
+
+# Extimate derivative
+dydx <- TVRegDiffR(
+  data = obs,
+  iter = 1e3,
+  alph = 0.2,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx
+  )
+dydx <- dydx[-1]
+
+# Prediction
+pred <- obs[1] + cumsum(dydx*dx)
+```
+
+```{r plot, echo = FALSE, dev = 'svg', fig.height=4, fig.width=6}
 # Plot observed vs predicted
-ggplot(smallEx %>% 
-         filter(key != "dydx"), 
-       aes(x = x, y = value, color = key, linetype = key)) +
-  geom_line() +
-  theme_minimal() +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom") +
-  labs(x = "x",
-       y = "y")
+plot(x, obs, pch = 20, col = "#57575F")
+lines(x, pred, col = "#CA3542", lty = 2, lwd = 2)
+lines(x, true, col = "#27647B", lty = 1, lwd = 2)
+legend("bottomleft", 
+       legend = c("Predicted", "True"),
+       col = c("#CA3542", "#27647B"),
+       lty = 2:1,
+       cex = 0.8)
 
 # Plot derivative
-ggplot(smallEx %>% 
-         filter(key == "dydx"), 
-       aes(x = x, y = value)) +
-  geom_point() +
-  theme_minimal() +
-  labs(x = "x",
-       y = "dydx")
+plot(x, dydx, pch = 20, ylim = c(-1,1), col = "#CA3542")
+points(x, dydx_true, col = "#27647B", pch = 20)
+legend("topleft", 
+       legend = c("Predicted", "True"),
+       col = c("#CA3542", "#27647B"),
+       pch = 20,
+       cex = 0.8)
 ```
 
 
