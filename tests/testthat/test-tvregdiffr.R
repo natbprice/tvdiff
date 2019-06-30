@@ -78,4 +78,81 @@ test_that("inputs", {
     ),
     "Input 'alph' should be a positive number"
   )
+  expect_error(
+    TVRegDiffR(
+      data = obs,
+      iter = 100,
+      alph = 0.2,
+      scale = "small",
+      ep = 1e-6,
+      dx = diff(x)
+    ),
+    "Input 'dx' should be a number. Method assumes equal spacing."
+  )
+  expect_error(
+    TVRegDiffR(
+      data = obs,
+      iter = 100,
+      alph = 0.2,
+      scale = "small",
+      ep = 1e-6,
+      plotflag = "yes"
+    ),
+    "Input 'plotflag' should be 0, 1, TRUE, or FALSE."
+  )
+  expect_error(
+    TVRegDiffR(
+      data = obs,
+      iter = 100,
+      alph = 0.2,
+      scale = "small",
+      ep = 1e-6,
+      diagflag = "yes"
+    ),
+    "Input 'diagflag' should be 0, 1, TRUE, or FALSE."
+  )
+  expect_error(
+    TVRegDiffR(
+      data = obs,
+      iter = 100,
+      alph = 0.2,
+      scale = "small",
+      ep = 1e-6,
+      tol = -0.1
+    ),
+    "Input 'tol' should be a positive number."
+  )
+  expect_error(
+    TVRegDiffR(
+      data = obs,
+      iter = 100,
+      alph = 0.2,
+      scale = "small",
+      ep = 1e-6,
+      maxit = "string"
+    ),
+    "Input 'maxit' should be a positive integer."
+  )
+})
+
+dydx <- TVRegDiffR(
+  data = obs,
+  iter = 100,
+  alph = 0.01,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx)
+
+dydx_lb = rep(-1.1, length(x))
+dydx_lb[x > 0.55] <- 0.9
+dydx_ub = rep(-0.9, length(x))
+dydx_ub[x > 0.45] <- 1.1
+
+test_that("tvdiff", {
+  expect_true(
+    all(dydx[-1] <= dydx_ub)
+  )
+  expect_true(
+    all(dydx[-1] >= dydx_lb)
+  )
 })
