@@ -96,22 +96,22 @@ TVRegDiffR <-
     if(class(data) != "numeric" | length(data) == 1) {
       stop("Input 'data' should be a numeric vector.")
     }
-    if(class(iter) != "numeric" | length(iter) != 1 | iter[1] <= 0) {
+    if(!class(iter) %in% c("numeric","integer") | length(iter) != 1 | iter[1] <= 0) {
       stop("Input 'iter' should be a positive integer.")
     }
-    if(class(alph) != "numeric" | length(alph) != 1 | alph[1] <= 0) {
+    if(!class(alph) %in% c("numeric","integer") | length(alph) != 1 | alph[1] <= 0) {
       stop("Input 'alph' should be a positive number.")
     }
-    if((class(u0) == "numeric" & length(u0) != (length(data) + 2)) | !is.null(u0)) {
+    if((class(u0)  %in% c("numeric","integer") & length(u0) != (length(data) + 2)) | !is.null(u0)) {
       stop("Input 'u0' should be a numeric vector of length(data) + 2 or NULL.")
     }
     if(!scale %in% c('small', 'large')) {
       stop("Input 'scale' should be 'small' or 'large'.")
     }
-    if(class(ep) != "numeric" | length(ep) != 1 | ep[1] <= 0) {
+    if(!class(ep)  %in% c("numeric","integer") | length(ep) != 1 | ep[1] <= 0) {
       stop("Input 'alph' should be a positive number.")
     }
-    if(class(dx) != "numeric" | length(dx) != 1) {
+    if(!class(dx) %in% c("numeric","integer") | length(dx) != 1) {
       stop("Input 'dx' should be a number. Method assumes equal spacing.")
     }
     if(!plotflag %in% c(TRUE, FALSE)) {
@@ -120,10 +120,10 @@ TVRegDiffR <-
     if(!diagflag %in% c(TRUE, FALSE)) {
       stop("Input 'diagflag' should be 0, 1, TRUE, or FALSE.")
     }
-    if(class(tol) != "numeric" | length(tol) != 1 | tol[1] <= 0) {
+    if(!class(tol) %in% c("numeric","integer") | length(tol) != 1 | tol[1] <= 0) {
       stop("Input 'tol' should be a positive number.")
     }
-    if(class(maxit) != "numeric" | length(maxit) != 1 | maxit[1] <= 0) {
+    if(!class(maxit) %in% c("numeric","integer") | length(maxit) != 1 | maxit[1] <= 0) {
       stop("Input 'maxit' should be a positive integer.")
     }
 
