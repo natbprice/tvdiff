@@ -19,6 +19,9 @@ Suggests:
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
 Imports:
-    Matrix
+    Matrix,
+    Rcpp
 Depends:
     R (>= 2.10)
+LinkingTo: 
+    Rcpp
