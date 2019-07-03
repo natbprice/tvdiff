@@ -28,7 +28,6 @@ before_install:
   - echo 'CXX1X=$(CXX)'            >> ~/.R/Makevars
   - echo 'CXX11=$(CXX)'            >> ~/.R/Makevars
   - echo 'CXX14=$(CXX)'            >> ~/.R/Makevars
-  - echo 'CXX14=$(CXX)'            >> ~/.R/Makevars
   - echo "SHLIB_CXXLD=g++$(VER)"   >> ~/.R/Makevars
   - echo "FC=gfortran$(VER)"       >> ~/.R/Makevars
   - echo "F77=gfortran$(VER)"      >> ~/.R/Makevars
