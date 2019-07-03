@@ -1,32 +1,5 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
+language: r
 sudo: false
 cache: packages
-
-addons:
-  apt:
-    sources: ['ubuntu-toolchain-r-test']
-    packages:
-      - gcc-8
-      - g++-8
-      - gfortran-8
-
-env:
-  global:
-  - MAKEFLAGS="-j 2"
-  - COMPILER=g++-8
-  - CC=gcc-8
-  - CXX=g++-8
-
-before_install:
-  - mkdir -p ~/.R && touch ~/.R/Makevars
-  - VER=-8
-  - echo "CC=gcc$(VER) -std=gnu99" >> ~/.R/Makevars
-  - echo "CXX=g++$(VER)"           >> ~/.R/Makevars
-  - echo 'CXX1X=$(CXX)'            >> ~/.R/Makevars
-  - echo 'CXX11=$(CXX)'            >> ~/.R/Makevars
-  - echo 'CXX14=$(CXX)'            >> ~/.R/Makevars
-  - echo "SHLIB_CXXLD=g++$(VER)"   >> ~/.R/Makevars
-  - echo "FC=gfortran$(VER)"       >> ~/.R/Makevars
-  - echo "F77=gfortran$(VER)"      >> ~/.R/Makevars
