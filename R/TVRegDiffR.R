@@ -77,6 +77,7 @@
 #'
 #' @import Matrix
 #' @importFrom graphics plot
+#' @useDynLib tvdiff
 #'
 #' @export
 TVRegDiffR <-
@@ -187,16 +188,34 @@ TVRegDiffR <-
         P <- alph * Matrix::bandSparse(n = n + 1, m = n + 1, k = 0,
                                diagonals = as.matrix(diag(L) + 1, ncol = 1))
 
+        Ax_R = function(v) alph * L %*% v + AT(A(v))
+
+        # if(ii == 10) {
+        #   browser()
+        #   temp <- Ax(as.vector(pcgResult$x), alph, as.matrix(L), dx)
+        #   temp2 <- pcgsolve(b = as.vector(g),
+        #                     M = as.matrix(P),
+        #                     alph = alph,
+        #                     L = as.matrix(L),
+        #                     dx = dx)
+        # }
+
         # Preconditiond conjugate gradient solver
-        pcgResult = pcg(
-          Ax = function(v) alph * L %*% v + AT(A(v)),
-          b = g,
-          x0 = rep(0, length(g)),
-          tol = tol,
-          maxiter = maxit,
-          M = P
-        )
-        s <- pcgResult$x
+        s <- pcgsolve(b = as.vector(g),
+                      M = as.matrix(P),
+                      alph = alph,
+                      L = as.matrix(L),
+                      dx = dx)
+
+        # pcgResult = pcg(
+        #   Ax = function(v) alph * L %*% v + AT(A(v)),
+        #   b = g,
+        #   x0 = rep(0, length(g)),
+        #   tol = tol,
+        #   maxiter = maxit,
+        #   M = P
+        # )
+        # s <- pcgResult$x
 
         # Update solution.
         u = u - s
