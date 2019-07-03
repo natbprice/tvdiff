@@ -77,7 +77,7 @@
 #' @import Matrix
 #' @import Rcpp
 #' @importFrom graphics plot
-#' @useDynLib tvdiff
+#' @useDynLib tvdiff, .registration = TRUE
 #'
 #' @export
 TVRegDiffR <-
