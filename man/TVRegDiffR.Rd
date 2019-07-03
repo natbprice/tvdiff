@@ -44,10 +44,10 @@ Default is the reciprocal of the data size.}
 (no).  Useful, but adds significant running time.}
 
 \item{tol}{R Version Only: Tolerance passed to preconditiond conjugate
-gradient solver \code{\link{pcg}}}
+gradient solver}
 
 \item{maxit}{R Version Only: Maximum iterations passed to
-preconditiond conjugate gradient solver \code{\link{pcg}}}
+preconditiond conjugate gradient solver}
 }
 \value{
 Estimate of the regularized derivative of data.  Due to different
@@ -60,7 +60,7 @@ differentiation.
 }
 \details{
 C++ code for preconditioned conjugate gradient method adapted from
-\code{\link[cPCG]{pcgsolve}}
+\code{cPCG::pcgsolve}
 }
 \examples{
 # Load small demo data

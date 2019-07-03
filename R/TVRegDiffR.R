@@ -4,7 +4,7 @@
 #' differentiation.
 #'
 #' C++ code for preconditioned conjugate gradient method adapted from
-#' \code{\link[cPCG]{pcgsolve}}
+#' \code{cPCG::pcgsolve}
 #'
 #' @param data Vector of data to be differentiated.
 #' @param iter Number of iterations to run the main loop. A stopping condition
@@ -34,9 +34,9 @@
 #' @param plotflag Flag whether to display plot at each iteration. Default is 0
 #'  (no).  Useful, but adds significant running time.
 #' @param tol R Version Only: Tolerance passed to preconditiond conjugate
-#' gradient solver \code{\link{pcg}}
+#' gradient solver
 #' @param maxit R Version Only: Maximum iterations passed to
-#' preconditiond conjugate gradient solver \code{\link{pcg}}
+#' preconditiond conjugate gradient solver
 #'
 #' @return Estimate of the regularized derivative of data.  Due to different
 #' grid assumptions, length( u ) = length( data ) + 1 if scale = 'small',
