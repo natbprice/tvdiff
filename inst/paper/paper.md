@@ -20,7 +20,7 @@ affiliations:
  - name: Nebraska Cooperative Fish and Wildlife Research Unit, University of Nebraska-Lincoln
    index: 2
 date: 04 July 2019
-bibliography: paper.bib
+bibliography: inst/paper/paper.bib
 ---
 
 # Summary   
