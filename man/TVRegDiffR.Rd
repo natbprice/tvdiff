@@ -5,8 +5,7 @@
 \title{Total Variation Regularized Numerical Differentiation (TVDiff)}
 \usage{
 TVRegDiffR(data, iter, alph, u0 = NULL, scale = "small", ep = 1e-06,
-  dx = 1/length(data), plotflag = 0, diagflag = 0, tol = 1e-04,
-  maxit = 200)
+  dx = 1/length(data), plotflag = 0, tol = 1e-06, maxit = 1000)
 }
 \arguments{
 \item{data}{Vector of data to be differentiated.}
@@ -44,11 +43,6 @@ Default is the reciprocal of the data size.}
 \item{plotflag}{Flag whether to display plot at each iteration. Default is 0
 (no).  Useful, but adds significant running time.}
 
-\item{diagflag}{Flag whether to display diagnostics at each iteration.
-Default is 0 (no).  Useful for diagnosing preconditioning problems.  When
-tolerance is not met, an early iterate being best is more worrying than a
-large relative residual.}
-
 \item{tol}{R Version Only: Tolerance passed to preconditiond conjugate
 gradient solver \code{\link{pcg}}}
 
@@ -63,6 +57,10 @@ otherwise length( u ) = length( data ).
 \description{
 Estimate the derivative of noisy data using total variation regularized
 differentiation.
+}
+\details{
+C++ code for preconditioned conjugate gradient method adapted from
+\code{\link[cPCG]{pcgsolve}}
 }
 \examples{
 # Load small demo data

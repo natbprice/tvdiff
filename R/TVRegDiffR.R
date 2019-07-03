@@ -3,6 +3,9 @@
 #' Estimate the derivative of noisy data using total variation regularized
 #' differentiation.
 #'
+#' C++ code for preconditioned conjugate gradient method adapted from
+#' \code{\link[cPCG]{pcgsolve}}
+#'
 #' @param data Vector of data to be differentiated.
 #' @param iter Number of iterations to run the main loop. A stopping condition
 #' based on the norm of the gradient vector g below would be an easy
@@ -30,10 +33,6 @@
 #' Default is the reciprocal of the data size.
 #' @param plotflag Flag whether to display plot at each iteration. Default is 0
 #'  (no).  Useful, but adds significant running time.
-#' @param diagflag Flag whether to display diagnostics at each iteration.
-#' Default is 0 (no).  Useful for diagnosing preconditioning problems.  When
-#' tolerance is not met, an early iterate being best is more worrying than a
-#' large relative residual.
 #' @param tol R Version Only: Tolerance passed to preconditiond conjugate
 #' gradient solver \code{\link{pcg}}
 #' @param maxit R Version Only: Maximum iterations passed to
@@ -76,6 +75,7 @@
 #' data," ISRN Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
 #'
 #' @import Matrix
+#' @import Rcpp
 #' @importFrom graphics plot
 #' @useDynLib tvdiff
 #'
@@ -89,9 +89,8 @@ TVRegDiffR <-
            ep = 1e-6,
            dx = 1 / length(data),
            plotflag = 0,
-           diagflag = 0,
-           tol = 1e-4,
-           maxit = 200) {
+           tol = 1e-6,
+           maxit = 1e3) {
 
     # Check inputs
     if(class(data) != "numeric" | length(data) == 1) {
@@ -170,6 +169,7 @@ TVRegDiffR <-
 
       # Since Au( 0 ) = 0, we need to adjust.
       ofst <- data[1]
+
       # Precompute.
       ATb = AT(ofst - data)
 
@@ -178,6 +178,7 @@ TVRegDiffR <-
         # Diagonal matrix of weights, for linearizing E-L equation.
         Q <- Matrix::bandSparse(n = n, m = n, k = 0,
                         diagonals = matrix( 1 / ( sqrt( ( D %*% u )^2 + ep )), ncol = 1))
+
         # Linearized diffusion matrix, also approximation of Hessian.
         L = dx * DT %*% Q %*% D
 
@@ -188,41 +189,23 @@ TVRegDiffR <-
         P <- alph * Matrix::bandSparse(n = n + 1, m = n + 1, k = 0,
                                diagonals = as.matrix(diag(L) + 1, ncol = 1))
 
-        Ax_R = function(v) alph * L %*% v + AT(A(v))
-
-        # if(ii == 10) {
-        #   browser()
-        #   temp <- Ax(as.vector(pcgResult$x), alph, as.matrix(L), dx)
-        #   temp2 <- pcgsolve(b = as.vector(g),
-        #                     M = as.matrix(P),
-        #                     alph = alph,
-        #                     L = as.matrix(L),
-        #                     dx = dx)
-        # }
-
-        # Preconditiond conjugate gradient solver
+        # Preconditiond conjugate gradient solver (C++ code)
         s <- pcgsolve(b = as.vector(g),
                       M = as.matrix(P),
                       alph = alph,
                       L = as.matrix(L),
-                      dx = dx)
-
-        # pcgResult = pcg(
-        #   Ax = function(v) alph * L %*% v + AT(A(v)),
-        #   b = g,
-        #   x0 = rep(0, length(g)),
-        #   tol = tol,
-        #   maxiter = maxit,
-        #   M = P
-        # )
-        # s <- pcgResult$x
+                      dx = dx,
+                      tol = tol,
+                      maxIter = maxit)
 
         # Update solution.
         u = u - s
 
         # Display plot.
         if (plotflag) {
-          plot(u)
+          Sys.sleep(0.05)
+          plot(u, xlab = "index", ylab = "derivative")
+          Sys.sleep(0)
         }
       }
     } else if (scale == "large") {

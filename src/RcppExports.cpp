@@ -55,17 +55,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// icc
-arma::mat icc(arma::mat A);
-RcppExport SEXP _tvdiff_icc(SEXP ASEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
-    rcpp_result_gen = Rcpp::wrap(icc(A));
-    return rcpp_result_gen;
-END_RCPP
-}
 // pcgsolve
 arma::vec pcgsolve(arma::vec b, arma::mat M, double alph, arma::mat L, double dx, float tol, int maxIter);
 RcppExport SEXP _tvdiff_pcgsolve(SEXP bSEXP, SEXP MSEXP, SEXP alphSEXP, SEXP LSEXP, SEXP dxSEXP, SEXP tolSEXP, SEXP maxIterSEXP) {
@@ -89,7 +78,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tvdiff_A", (DL_FUNC) &_tvdiff_A, 2},
     {"_tvdiff_AT", (DL_FUNC) &_tvdiff_AT, 2},
     {"_tvdiff_Ax", (DL_FUNC) &_tvdiff_Ax, 4},
-    {"_tvdiff_icc", (DL_FUNC) &_tvdiff_icc, 1},
     {"_tvdiff_pcgsolve", (DL_FUNC) &_tvdiff_pcgsolve, 7},
     {NULL, NULL, 0}
 };

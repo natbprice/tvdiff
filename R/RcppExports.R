@@ -17,28 +17,21 @@ Ax <- function(x, alph, L, dx) {
     .Call('_tvdiff_Ax', PACKAGE = 'tvdiff', x, alph, L, dx)
 }
 
-icc <- function(A) {
-    .Call('_tvdiff_icc', PACKAGE = 'tvdiff', A)
-}
-
 #' Preconditioned conjugate gradient method
 #'
 #' Preconditioned conjugate gradient method for solving system of linear equations Ax = b,
 #' where A is symmetric and positive definite.
 #'
-#' @title Solve for x in Ax = b using preconditioned conjugate gradient method.
-#' @param A matrix, symmetric and positive definite.
+#' Code is a slightly modified version of \code{\link[cPCG]{pcgsolve}}
+#'
 #' @param b vector, with same dimension as number of rows of A.
-#' @param preconditioner string, method for preconditioning: \code{"Jacobi"} (default), \code{"SSOR"}, or \code{"ICC"}.
+#' @param M matrix, preconditioner matrix defined interal to \code{\link{TVRegDiffR}}.
+#' @param alph numeric, regularization parameter used in \code{\link{TVRegDiffR}}.
+#' @param L matrix, linearized diffusion matrix internal to \code{\link{TVRegDiffR}}.
+#' @param dx numeric, grid spacing used in \code{\link{TVRegDiffR}}.
 #' @param tol numeric, threshold for convergence, default is \code{1e-6}.
 #' @param maxIter numeric, maximum iteration, default is \code{1000}.
 #' @return A vector representing solution x.
-#' @examples
-#' \dontrun{
-#' test_A <- matrix(c(4,1,1,3), ncol = 2)
-#' test_b <- matrix(1:2, ncol = 1)
-#' pcgsolve(test_A, test_b, "ICC")
-#' }
 pcgsolve <- function(b, M, alph, L, dx, tol = 1e-6, maxIter = 1000L) {
     .Call('_tvdiff_pcgsolve', PACKAGE = 'tvdiff', b, M, alph, L, dx, tol, maxIter)
 }

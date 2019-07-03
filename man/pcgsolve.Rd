@@ -2,17 +2,20 @@
 % Please edit documentation in R/RcppExports.R
 \name{pcgsolve}
 \alias{pcgsolve}
-\title{Solve for x in Ax = b using preconditioned conjugate gradient method.}
+\title{Preconditioned conjugate gradient method}
 \usage{
-pcgsolve(A, b, preconditioner = "Jacobi", tol = 1e-06,
-  maxIter = 1000L)
+pcgsolve(b, M, alph, L, dx, tol = 1e-06, maxIter = 1000L)
 }
 \arguments{
-\item{A}{matrix, symmetric and positive definite.}
-
 \item{b}{vector, with same dimension as number of rows of A.}
 
-\item{preconditioner}{string, method for preconditioning: \code{"Jacobi"} (default), \code{"SSOR"}, or \code{"ICC"}.}
+\item{M}{matrix, preconditioner matrix defined interal to \code{\link{TVRegDiffR}}.}
+
+\item{alph}{numeric, regularization parameter used in \code{\link{TVRegDiffR}}.}
+
+\item{L}{matrix, linearized diffusion matrix internal to \code{\link{TVRegDiffR}}.}
+
+\item{dx}{numeric, grid spacing used in \code{\link{TVRegDiffR}}.}
 
 \item{tol}{numeric, threshold for convergence, default is \code{1e-6}.}
 
@@ -22,16 +25,9 @@ pcgsolve(A, b, preconditioner = "Jacobi", tol = 1e-06,
 A vector representing solution x.
 }
 \description{
-Preconditioned conjugate gradient method
-}
-\details{
 Preconditioned conjugate gradient method for solving system of linear equations Ax = b,
 where A is symmetric and positive definite.
 }
-\examples{
-\dontrun{
-test_A <- matrix(c(4,1,1,3), ncol = 2)
-test_b <- matrix(1:2, ncol = 1)
-pcgsolve(test_A, test_b, "ICC")
-}
+\details{
+Code is a slightly modified version of \code{\link[cPCG]{pcgsolve}}
 }

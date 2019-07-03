@@ -36,81 +36,27 @@ arma::vec Ax(arma::vec x, double alph, arma::mat L, double dx){
   return alph * L * x + AT(A(x, dx), dx);
 }
 
-// incomplete cholesky factorization
-// [[Rcpp::export]]
-arma::mat icc(arma::mat A){
-  int N = A.n_cols ;
-  arma::mat temp = A;
-  for(int k = 0; k < N; k++){
-    temp(k,k) = sqrt(temp(k,k));
-    for(int i = k + 1; i < N; i++){
-      if(temp(i,k) != 0){
-        temp(i,k) = temp(i,k)/temp(k,k);
-      }
-    }
-    for(int j = k + 1; j < N; j++){
-      for(int i= j; i < N; i++){
-        if(temp(i,j) != 0){
-          temp(i,j) = temp(i,j) - temp(i,k)*temp(j,k);
-        }
-      }
-    }
-  }
-
-  for(int i = 0; i<N; i++){
-    for(int j = i+1; j<N; j++){
-      temp(i,j) = 0;
-    }
-  }
-
-  return temp;
-}
-
-
 //' Preconditioned conjugate gradient method
 //'
 //' Preconditioned conjugate gradient method for solving system of linear equations Ax = b,
 //' where A is symmetric and positive definite.
 //'
-//' @title Solve for x in Ax = b using preconditioned conjugate gradient method.
-//' @param A matrix, symmetric and positive definite.
+//' Code is a slightly modified version of \code{\link[cPCG]{pcgsolve}}
+//'
 //' @param b vector, with same dimension as number of rows of A.
-//' @param preconditioner string, method for preconditioning: \code{"Jacobi"} (default), \code{"SSOR"}, or \code{"ICC"}.
+//' @param M matrix, preconditioner matrix defined interal to \code{\link{TVRegDiffR}}.
+//' @param alph numeric, regularization parameter used in \code{\link{TVRegDiffR}}.
+//' @param L matrix, linearized diffusion matrix internal to \code{\link{TVRegDiffR}}.
+//' @param dx numeric, grid spacing used in \code{\link{TVRegDiffR}}.
 //' @param tol numeric, threshold for convergence, default is \code{1e-6}.
 //' @param maxIter numeric, maximum iteration, default is \code{1000}.
 //' @return A vector representing solution x.
-//' @examples
-//' \dontrun{
-//' test_A <- matrix(c(4,1,1,3), ncol = 2)
-//' test_b <- matrix(1:2, ncol = 1)
-//' pcgsolve(test_A, test_b, "ICC")
-//' }
 // [[Rcpp::export]]
 arma::vec pcgsolve(arma::vec b, arma::mat M, double alph, arma::mat L, double dx, float tol = 1e-6, int maxIter = 1000) {
-  /* Function for solving linear equations Ax = b using preconditioned conjugate gradient
-   Input:
-   A: matrix.
-   b: vector
-   preconditioner: string, type of preconditioner
-   Output
-   x: vector
-   */
+
   // get number of columns of A
   int C = M.n_cols ;
   int R = M.n_rows ;
-
-  /* get preconditioner M
-  arma::mat M;
-  if (preconditioner == "Jacobi"){
-    M = arma::diagmat(A);
-  } else if(preconditioner == "SSOR"){
-    arma::mat D = arma::diagmat(A);
-    arma::mat L = arma::trimatl(A);
-    M = (D+L) * D.i() * (D+L).t();
-  } else if(preconditioner == "ICC"){
-    M = icc(A);
-  }
-  */
 
   // initiate solution x as zeros
   arma::vec x(C) ;
