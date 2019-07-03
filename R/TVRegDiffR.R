@@ -117,9 +117,6 @@ TVRegDiffR <-
     if(!plotflag %in% c(TRUE, FALSE)) {
       stop("Input 'plotflag' should be 0, 1, TRUE, or FALSE.")
     }
-    if(!diagflag %in% c(TRUE, FALSE)) {
-      stop("Input 'diagflag' should be 0, 1, TRUE, or FALSE.")
-    }
     if(!class(tol) %in% c("numeric","integer") | length(tol) != 1 | tol[1] <= 0) {
       stop("Input 'tol' should be a positive number.")
     }

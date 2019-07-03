@@ -107,17 +107,6 @@ test_that("inputs", {
       alph = 0.2,
       scale = "small",
       ep = 1e-6,
-      diagflag = "yes"
-    ),
-    "Input 'diagflag' should be 0, 1, TRUE, or FALSE."
-  )
-  expect_error(
-    TVRegDiffR(
-      data = obs,
-      iter = 100,
-      alph = 0.2,
-      scale = "small",
-      ep = 1e-6,
       tol = -0.1
     ),
     "Input 'tol' should be a positive number."
@@ -137,8 +126,8 @@ test_that("inputs", {
 
 dydx <- TVRegDiffR(
   data = obs,
-  iter = 100,
-  alph = 0.01,
+  iter = 1e3,
+  alph = 0.2,
   scale = "small",
   ep = 1e-6,
   dx = dx)
