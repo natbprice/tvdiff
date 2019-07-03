@@ -1,1 +1,1 @@
-### Subdirectory for software paper related to package `natbprice/tvdiff/`
+Subdirectory for software paper (intended submission to JOSS)
