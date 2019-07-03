@@ -2,3 +2,5 @@ inst/doc
 .Rproj.user
 .Rhistory
 vignettes/.Rhistory
+.DS_Store
+inst/paper/paper.pdf
