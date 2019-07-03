@@ -26,3 +26,4 @@ Depends:
 LinkingTo: 
     Rcpp,
     RcppArmadillo
+SystemRequirements: C++11
