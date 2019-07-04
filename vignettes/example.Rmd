@@ -63,16 +63,19 @@ legend("bottomleft",
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
        lty = 2:1,
-       cex = 0.8)
+       cex = 0.8,
+       lwd = 2)
 
 # Plot derivative
-plot(x, dydx, pch = 20, ylim = c(-1,1), col = "#CA3542", ylab = expression(dy/dx))
-points(x, dydx_true, col = "#27647B", pch = 20)
+plot(x, dydx, type = "l", ylim = c(-1,1), col = "#CA3542", 
+     ylab = expression(dy/dx), lty = 2, lwd = 2)
+lines(x, dydx_true, col = "#27647B", lty = 1, lwd = 2)
 legend("topleft", 
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
-       pch = 20,
-       cex = 0.8)
+       lty = 2:1,
+       cex = 0.8,
+       lwd = 2)
 
 ```
 
@@ -114,10 +117,64 @@ legend("topleft",
        legend = c("Predicted"),
        col = c("#CA3542"),
        lty = 2:1,
+       cex = 0.8,
+       lwd = 2)
+
+# Plot derivative
+plot(x, dydx, type = "l", col = "#CA3542", ylab = expression(dy/dx))
+
+```
+
+## Toy example
+A test dataset based on the piecewise function $f(x) = (x+2)^2$ when $x<0$ and
+$f(x) = (x-2)^2$ when $x>0$ with Gaussian noise with a standard deviation of 0.5.
+
+```{r toy, fig.height=4, fig.width=6}
+
+# Load small demo data 
+data("toyproblem")
+
+# Unpack data
+x <- toyproblem$x
+dx <- x[2] - x[1]
+y_obs <- toyproblem$y_obs
+y_true <- toyproblem$y_true
+dydx_true <- toyproblem$dydx_true
+
+
+# Extimate derivative
+dydx <- TVRegDiffR(
+  data = y_obs,
+  iter = 1e3,
+  alph = 0.05,
+  scale = "small",
+  ep = 1e-6,
+  dx = dx
+  )
+dydx <- dydx[-1]
+
+# Prediction
+y_pred <- y_obs[1] + cumsum(dydx*dx)
+
+# Plot observed vs predicted
+plot(x, y_obs, pch = 20, col = "#57575F", ylab = "y")
+lines(x, y_pred, col = "#CA3542", lty = 2, lwd = 2)
+lines(x, y_true, col = "#27647B", lty = 1, lwd = 2)
+legend("bottomleft", 
+       legend = c("Predicted", "True"),
+       col = c("#CA3542", "#27647B"),
+       lty = 2:1,
        cex = 0.8)
 
 # Plot derivative
-plot(x, dydx, pch = 20, col = "#CA3542", ylab = expression(dy/dx))
+plot(x, dydx, type = "l", ylim = c(-4, 4), col = "#CA3542", 
+     ylab = expression(dy/dx), lty = 2, lwd = 2)
+lines(x, dydx_true, col = "#27647B", lty = 1, lwd = 2)
+legend("topleft",
+       legend = c("Predicted", "True"),
+       col = c("#CA3542", "#27647B"),
+       lty = 2:1,
+       cex = 0.8)
 
 ```
 

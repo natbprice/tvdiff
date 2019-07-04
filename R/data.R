@@ -1,3 +1,18 @@
+#' Toy problem
+#'
+#' A test dataset based on the piecewise function \eqn{f(x) = (x+2)^2} when \eqn{x<0} and
+#' \eqn{f(x) = (x-2)^2} when \eqn{x>0} with Gaussian noise with a standard deviation of 0.5.
+#'
+#' @format A data frame with 100 rows and 4 variables:
+#' \describe{
+#'   \item{x}{\code{seq(-4, 4, length.out = 100)}}
+#'   \item{y_true}{true value}
+#'   \item{y_obs}{observation with noise}
+#'   \item{dydx_true}{true derivative}
+#' }
+#'
+"toyproblem"
+
 #' Small demo dataset
 #'
 #' A test dataset based on the function \eqn{f(x) = |x-0.5|} with Gaussian noise
