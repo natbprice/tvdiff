@@ -99,7 +99,8 @@ legend("bottomleft",
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
        lty = 2:1,
-       cex = 0.8)
+       cex = 0.8,
+       lwd = 2)
 
 # Plot derivative
 plot(x,
@@ -113,8 +114,7 @@ legend("topleft",
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
        pch = 20,
-       cex = 0.8,
-       lwd = 2)
+       cex = 0.8)
 ```
 
 
