@@ -6,6 +6,8 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build
 status](https://travis-ci.org/natbprice/tvdiff.svg?branch=master)](https://travis-ci.org/natbprice/tvdiff)
+[![Coverage
+status](https://codecov.io/gh/natbprice/tvdiff/branch/master/graph/badge.svg)](https://codecov.io/github/natbprice/tvdiff?branch=master)
 
 The **tvdiff** package is an R translation of the Matlab implementation
 of the Total Variation Regularized Numerical Differentiation algorithm
