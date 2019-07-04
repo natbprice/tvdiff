@@ -77,7 +77,10 @@ Rick Chartrand, “Numerical Differentiation of Noisy, Nonsmooth Data,”
 ISRN Applied Mathematics, vol. 2011, Article ID 164564, 11 pages, 2011.
 <https://doi.org/10.5402/2011/164564>.
 
+**Matlab code:**
 <https://sites.google.com/site/dnartrahckcir/home/tvdiff-code>
 
-Python translation by Simone Sturniolo:
-<https://github.com/stur86/tvregdiff>
+**Python translation:** <https://github.com/stur86/tvregdiff>
+
+**C++ implementation of preconditioned conjugate gradient method:**
+<https://github.com/styvon/cPCG>
