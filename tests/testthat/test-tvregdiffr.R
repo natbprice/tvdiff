@@ -14,6 +14,17 @@ dx <- x[2] - x[1]
 test_that("inputs", {
   expect_error(
     TVRegDiffR(
+      data = obs,
+      iter = 100,
+      alph = 0.2,
+      scale = "large",
+      ep = 1e-6,
+      dx = dx
+    ),
+    "Only small scale algorithm is implemented."
+  )
+  expect_error(
+    TVRegDiffR(
       data = "string",
       iter = 100,
       alph = 0.2,
