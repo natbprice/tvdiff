@@ -35,7 +35,7 @@ local({
 
 The **tvdiff** package is a solution to the problem of how to estimate the rate of change (i.e., derivative) when available data is noisy and nonsmooth. If the data is noisy, then simple finite difference methods of estimating the derivative are often inaccurate. If the data generating process is nonsmooth, then fitting a smooth model to the data in order to estimate the derivative may yield inaccurate estimates.
 
-This package is based on the Matlab implementation of the Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand (see References below).
+This package is based on the Matlab implementation of the Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand. This package uses a C++ method for the preconditioned conjugate method based on the cPCG package. See [references](#references) section.
 
 ## Installation
 
@@ -45,6 +45,8 @@ The **tvdiff** package is currently only available from Github.
 # Install development version from GitHub (requires devtools package)
 devtools::install_github("natbprice/tvdiff")
 ```
+
+**macOS:** See [instructions](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/) regarding R compiler tools for Rcpp
 
 ## Example
 A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with Gaussian noise of standard deviation 0.05. The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation. A prediction of the original function is obtained from the estimated derivative through numerical integration.
@@ -120,7 +122,7 @@ legend("topleft",
 ```
 
 
-## References
+## References {#references}
 Rick Chartrand, “Numerical Differentiation of Noisy, Nonsmooth Data,”
 ISRN Applied Mathematics, vol. 2011, Article ID 164564, 11 pages, 2011.
 https://doi.org/10.5402/2011/164564.

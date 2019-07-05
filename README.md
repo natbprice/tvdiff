@@ -18,7 +18,9 @@ in order to estimate the derivative may yield inaccurate estimates.
 
 This package is based on the Matlab implementation of the Total
 Variation Regularized Numerical Differentiation algorithm by Rick
-Chartrand (see References below).
+Chartrand. This package uses a C++ method for the preconditioned
+conjugate method based on the cPCG package. See
+[references](#references) section.
 
 ## Installation
 
@@ -28,6 +30,10 @@ The **tvdiff** package is currently only available from Github.
 # Install development version from GitHub (requires devtools package)
 devtools::install_github("natbprice/tvdiff")
 ```
+
+**macOS:** See
+[instructions](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/)
+regarding R compiler tools for Rcpp
 
 ## Example
 
