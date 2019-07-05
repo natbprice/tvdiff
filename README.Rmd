@@ -33,57 +33,57 @@ local({
 [![Travis build status](https://travis-ci.org/natbprice/tvdiff.svg?branch=master)](https://travis-ci.org/natbprice/tvdiff)
 [![Coverage status](https://codecov.io/gh/natbprice/tvdiff/branch/master/graph/badge.svg)](https://codecov.io/github/natbprice/tvdiff?branch=master)
 
-The **tvdiff** package is an R translation of the Matlab implementation of the 
-Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand.
-The package implements the methods found in Rick Chartrand,"Numerical 
-differentiation of noisy, nonsmooth data," ISRN Applied Mathematics, Vol. 2011,
-Article ID 164564, 2011.
+The **tvdiff** package is a solution to the problem of how to estimate the rate of change (i.e., derivative) when available data is noisy and nonsmooth. If the data is noisy, then simple finite difference methods of estimating the derivative are often inaccurate. If the data generating process is nonsmooth, then fitting a smooth model to the data in order to estimate the derivative may yield inaccurate estimates.
+
+This package is based on the Matlab implementation of the Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand (see References below).
 
 ## Installation
 
 The **tvdiff** package is currently only available from Github.
 
-```{r, eval = FALSE}
+```{r install_package, eval = FALSE}
+# Install development version from GitHub (requires devtools package)
 devtools::install_github("natbprice/tvdiff")
 ```
 
 ## Example
-A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with 
-Gaussian noise of standard deviation 0.05. The derivative is estimated from the 
-noisy observations using Total Variation Regularized Differentiation. A
-prediction of the original function is obtained from the estimated derivative 
-through numerical integration.
+A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with Gaussian noise of standard deviation 0.05. The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation. A prediction of the original function is obtained from the estimated derivative through numerical integration.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
+```{r load_package, echo = FALSE, message = FALSE, warning = FALSE}
 # load packages
 library(tvdiff)
 ```
 
 ### Load demo data
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+Example data is included in the package for demonstration.
+
+```{r load_data, echo = TRUE, message = FALSE, warning = FALSE}
 data("smalldemodata")
 str(smalldemodata)
 ```
 
-### Use `TVRegDiffR` to perform numerical integration on the demo data
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+### Estimate derivative
+The `TVRegDiffR` function is used to estimate the derivative. The main tuning parameter is the regularization parameter `alph`. Start by varying `alph` by 
+orders of magnitude until reasonable results are obtained. The number of iterations `iter` must also be specified since there is no default stopping criteria.
 
-# Data
+```{r estimate_derivative, echo = TRUE, message = FALSE, warning = FALSE}
+
+# Unpack data
 x <- smalldemodata$x
 obs <- smalldemodata$obs
 true <- smalldemodata$true
+
+# True derivative
 dydx_true <- rep(-1, length(x))
 dydx_true[x > 0.5] <- 1
 dx <- x[2] - x[1]
 
 # Extimate derivative
 dydx <- TVRegDiffR(
-  data = obs,
-  iter = 1e3,
-  alph = 0.2,
-  scale = "small",
-  ep = 1e-6,
-  dx = dx
+  data = obs, # Vector of data to be differentiated
+  iter = 1e3, # Number of iterations
+  alph = 0.2, # Regularlization parameter
+  dx = dx     # Grid spacing 
   )
 dydx <- dydx[-1]
 
@@ -91,30 +91,31 @@ dydx <- dydx[-1]
 pred <- obs[1] + cumsum(dydx*dx)
 ```
 
-```{r plot, echo = FALSE, dev = 'svg', fig.height=4, fig.width=6}
+### Plot results
+For this simple example we can compare the estimates to the true values.
+
+```{r plot_results, echo = FALSE, dev = 'svg', fig.height=4, fig.width=6}
 # Plot observed vs predicted
 plot(x, obs, pch = 20, col = "#57575F", ylab = "y")
 lines(x, pred, col = "#CA3542", lty = 2, lwd = 2)
 lines(x, true, col = "#27647B", lty = 1, lwd = 2)
 legend("bottomleft", 
-       legend = c("Predicted", "True"),
-       col = c("#CA3542", "#27647B"),
-       lty = 2:1,
+       legend = c("Observed", "Predicted", "True"),
+       col = c("#57575F", "#CA3542", "#27647B"),
+       pch = c(20, NA, NA),
+       lty = c(NA, 2, 1),
        cex = 0.8,
-       lwd = 2)
+       lwd = c(NA, 2, 2))
 
 # Plot derivative
-plot(x,
-     dydx, 
-     pch = 20, 
-     ylim = c(-1,1), 
-     col = "#CA3542", 
+plot(x, dydx, ylim = c(-1,1), col = "#CA3542", type = "l", lty = 2, lwd = 2,
      ylab = expression(dy/dx))
-points(x, dydx_true, col = "#27647B", pch = 20)
+lines(x, dydx_true, col = "#27647B", lty = 1, lwd = 2)
 legend("topleft", 
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
-       pch = 20,
+       lty = c(2, 1),
+       lwd = c(2, 2),
        cex = 0.8)
 ```
 

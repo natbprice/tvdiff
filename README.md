@@ -9,17 +9,23 @@ status](https://travis-ci.org/natbprice/tvdiff.svg?branch=master)](https://travi
 [![Coverage
 status](https://codecov.io/gh/natbprice/tvdiff/branch/master/graph/badge.svg)](https://codecov.io/github/natbprice/tvdiff?branch=master)
 
-The **tvdiff** package is an R translation of the Matlab implementation
-of the Total Variation Regularized Numerical Differentiation algorithm
-by Rick Chartrand. The package implements the methods found in Rick
-Chartrand,“Numerical differentiation of noisy, nonsmooth data,” ISRN
-Applied Mathematics, Vol. 2011, Article ID 164564, 2011.
+The **tvdiff** package is a solution to the problem of how to estimate
+the rate of change (i.e., derivative) when available data is noisy and
+nonsmooth. If the data is noisy, then simple finite difference methods
+of estimating the derivative are often inaccurate. If the data
+generating process is nonsmooth, then fitting a smooth model to the data
+in order to estimate the derivative may yield inaccurate estimates.
+
+This package is based on the Matlab implementation of the Total
+Variation Regularized Numerical Differentiation algorithm by Rick
+Chartrand (see References below).
 
 ## Installation
 
 The **tvdiff** package is currently only available from Github.
 
 ``` r
+# Install development version from GitHub (requires devtools package)
 devtools::install_github("natbprice/tvdiff")
 ```
 
@@ -35,6 +41,8 @@ numerical integration.
 
 ### Load demo data
 
+Example data is included in the package for demonstration.
+
 ``` r
 data("smalldemodata")
 str(smalldemodata)
@@ -44,26 +52,32 @@ str(smalldemodata)
 #>  $ obs : num  0.495 0.459 0.496 0.427 0.444 ...
 ```
 
-### Use `TVRegDiffR` to perform numerical integration on the demo data
+### Estimate derivative
+
+The `TVRegDiffR` function is used to estimate the derivative. The main
+tuning parameter is the regularization parameter `alph`. Start by
+varying `alph` by orders of magnitude until reasonable results are
+obtained. The number of iterations `iter` must also be specified since
+there is no default stopping criteria.
 
 ``` r
 
-# Data
+# Unpack data
 x <- smalldemodata$x
 obs <- smalldemodata$obs
 true <- smalldemodata$true
+
+# True derivative
 dydx_true <- rep(-1, length(x))
 dydx_true[x > 0.5] <- 1
 dx <- x[2] - x[1]
 
 # Extimate derivative
 dydx <- TVRegDiffR(
-  data = obs,
-  iter = 1e3,
-  alph = 0.2,
-  scale = "small",
-  ep = 1e-6,
-  dx = dx
+  data = obs, # Vector of data to be differentiated
+  iter = 1e3, # Number of iterations
+  alph = 0.2, # Regularlization parameter
+  dx = dx     # Grid spacing 
   )
 dydx <- dydx[-1]
 
@@ -71,7 +85,11 @@ dydx <- dydx[-1]
 pred <- obs[1] + cumsum(dydx*dx)
 ```
 
-<img src= "./man/figures/README-plot-1.svg"><img src= "./man/figures/README-plot-2.svg">
+### Plot results
+
+For this simple example we can compare the estimates to the true values.
+
+<img src= "./man/figures/README-plot_results-1.svg"><img src= "./man/figures/README-plot_results-2.svg">
 
 ## References
 
