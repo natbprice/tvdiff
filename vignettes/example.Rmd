@@ -18,18 +18,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette contains examples from the article "Numerical Differentiation of
-Noisy, Nonsmooth Data" by Rick Chartrand (http://dx.doi.org/10.5402/2011/164564)
+## Toy Problem: Tuning regularization parameter
+This example is based on the article "Numerical Differentiation of
+Noisy, Nonsmooth Data" by Rick Chartrand (http://dx.doi.org/10.5402/2011/164564).
+We use the function $f(x) = \mid x - 0.5 \mid$ with Gaussian noise of standard deviation 0.05. First, we load and unpack the example data.
 
-## A Simple Nonsmooth Example
-A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with 
-Gaussian noise of standard deviation 0.05. The derivative is estimated from the 
-noisy observations using Total Variation Regularized Differentiation. A
-prediction of the original function is obtained from the estimated derivative 
-through numerical integration.
-
-```{r smallDemo, warning = FALSE, fig.height=4, fig.width=6}
-
+```{r load_data, warning = FALSE, fig.height=4, fig.width=6}
 # Load small demo data 
 data("smalldemodata")
 
@@ -37,53 +31,99 @@ data("smalldemodata")
 x <- smalldemodata$x
 obs <- smalldemodata$obs
 true <- smalldemodata$true
+
+# True derivative
 dydx_true <- rep(-1, length(x))
 dydx_true[x > 0.5] <- 1
 dx <- x[2] - x[1]
 
-# Extimate derivative
-dydx <- TVRegDiffR(
-  data = obs,
-  iter = 1e3,
-  alph = 0.2,
-  scale = "small",
-  ep = 1e-6,
-  dx = dx
-  )
-dydx <- dydx[-1]
+```
 
-# Prediction
-pred <- obs[1] + cumsum(dydx*dx)
+Next, the `TVRegDiffR` function is used to estimate the derivative. The main tuning parameter is the regularization parameter `alph`. We start by varying `alph` by 
+orders of magnitude.
 
-# Plot observed vs predicted
+```{r tuning}
+# Vector of regularization parameters to try
+alph <- c(1e-3, 1e-1, 1)
+
+# Preallocate space for results
+dydx <- matrix(ncol = length(alph), nrow = length(x))
+pred <- matrix(ncol = length(alph), nrow = length(x))
+
+# Estimate derivative using different regularization parameters
+for(i in seq_along(alph)) {
+  # Extimate derivative
+  estimate <- TVRegDiffR(
+    data = obs, # Vector of data to be differentiated
+    iter = 1e3, # Number of iterations
+    alph = alph[i], # Regularlization parameter
+    dx = dx     # Grid spacing 
+    )
+  dydx[, i] <- estimate[-1]
+  
+  # Prediction
+  pred[, i] <- obs[1] + cumsum(dydx[, i]*dx)
+}
+```
+
+We plot the results to determine if the regularization parameter is reasonable.
+
+```{r smalldemo_plot1, fig.height=4, fig.width=6}
+# Line style and color for plot
+lty <- c(2, 2, 2)
+col <- c("#1b9e77", "#7570b3", "#e7298a")
+
+# Initialize plot with observed and true
 plot(x, obs, pch = 20, col = "#57575F", ylab = "y")
-lines(x, pred, col = "#CA3542", lty = 2, lwd = 2)
-lines(x, true, col = "#27647B", lty = 1, lwd = 2)
-legend("bottomleft", 
-       legend = c("Predicted", "True"),
-       col = c("#CA3542", "#27647B"),
-       lty = 2:1,
-       cex = 0.8,
-       lwd = 2)
+lines(x, true, col = "#d95f02", lty = 1, lwd = 2)
 
-# Plot derivative
-plot(x, dydx, type = "l", ylim = c(-1,1), col = "#CA3542", 
-     ylab = expression(dy/dx), lty = 2, lwd = 2)
-lines(x, dydx_true, col = "#27647B", lty = 1, lwd = 2)
-legend("topleft", 
-       legend = c("Predicted", "True"),
-       col = c("#CA3542", "#27647B"),
-       lty = 2:1,
-       cex = 0.8,
-       lwd = 2)
+# Add lines for each prediction
+for(i in seq_along(alph)) {
+  lines(x, pred[, i], col = col[i], lty = lty[i], lwd = 2)
+}
+
+# Add legend to plot
+legend("bottomleft", 
+       legend = c("Observed", "True", paste0("alph = ", alph)),
+       col = c("#57575F", "#d95f02", col),
+       pch = c(20, rep(NA, length(alph) + 1)),
+       lty = c(NA, 1, lty),
+       lwd = c(NA, rep(2, length(alph) + 1)),
+       cex = 0.8)
 
 ```
 
-## Respirometry Data 
-An example based on raw oxygen consumption data.
+```{r, fig.height=4, fig.width=6}
+# Line style and color for plot
+lty <- c(2, 2, 2)
+col <- c("#1b9e77", "#7570b3", "#e7298a")
+
+# Initialize plot with observed and true
+plot(x, dydx_true, col = "#d95f02", ylim = c(-1.5,1.5), 
+     ylab = expression(dy/dx), type = "l")
+
+# Add lines for each prediction
+for(i in seq_along(alph)) {
+  lines(x, dydx[, i], col = col[i], lty = lty[i], lwd = 2)
+}
+
+# Add legend to plot
+legend("topleft", 
+       legend = c("True", paste0("alph = ", alph)),
+       col = c("#d95f02", col),
+       lty = c(1, lty),
+       lwd = 2,
+       cex = 0.8)
+```
+
+When using a value of `alph = 1e-3` the estimated derivative is too wiggly and therefore the regularization parameter is too low. Using a value of `alph = 1` the prediction does not match the observed data and therefore the regularization parameter is too high. Using a regularization parameter of `alph = 0.1` yields reasonable results.
+
+
+## Application to real data: Respirometry example 
+This example is based on the article "Numerical Differentiation of
+Noisy, Nonsmooth Data" by Rick Chartrand (http://dx.doi.org/10.5402/2011/164564). However, since the tvdiff package does not implement the large scale algorithm we use only a subset of data and apply the small scale algorithm. The results are similar to those obtained in the original article.
 
 ```{r largeDemo, fig.height=4, fig.width=6}
-
 # Load data
 data("largedemodata")
 
@@ -125,12 +165,11 @@ plot(x, dydx, type = "l", col = "#CA3542", ylab = expression(dy/dx))
 
 ```
 
-## Toy example
-A test dataset based on the piecewise function $f(x) = (x+2)^2$ when $x<0$ and
-$f(x) = (x-2)^2$ when $x>0$ with Gaussian noise with a standard deviation of 0.5.
+## A more challenging toy problem
+We create a more challenging example based on the piecewise function $f(x) = (x+2)^2$ when $x<0$ and $f(x) = (x-2)^2$ when $x>0$ with Gaussian noise with a standard deviation of 0.5. There is considerable discrepancy between the estimated derivative and the true derivative. However, the results are much better than a 
+simple finite difference method.
 
 ```{r toy, fig.height=4, fig.width=6}
-
 # Load small demo data 
 data("toyproblem")
 
@@ -164,7 +203,8 @@ legend("bottomleft",
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
        lty = 2:1,
-       cex = 0.8)
+       cex = 0.8,
+       lwd = 2)
 
 # Plot derivative
 plot(x, dydx, type = "l", ylim = c(-4, 4), col = "#CA3542", 
@@ -174,7 +214,19 @@ legend("topleft",
        legend = c("Predicted", "True"),
        col = c("#CA3542", "#27647B"),
        lty = 2:1,
-       cex = 0.8)
+       cex = 0.8,
+       lwd = 2)
+
+# Simple finite difference
+plot(x[1:(length(x) - 1)], diff(y_obs) / diff(x), type = "l", lty = 2, lwd = 2,
+     xlab = "x", ylab = expression(dy/dx), col = "#CA3542")
+lines(x, dydx_true, col = "#27647B", lty = 1, lwd = 2)
+legend("topleft",
+       legend = c("Finite Difference", "True"),
+       col = c("#CA3542", "#27647B"),
+       lty = 2:1,
+       cex = 0.8,
+       lwd = 2)
 
 ```
 
