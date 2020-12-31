@@ -39,7 +39,7 @@ with Gaussian noise of standard deviation 0.05 ( \autoref{fig:data}). The deriva
 
 # Figures 
 
-![Example small-scale dataset values.\label{fig:data}](/man/figures/README-plot-1.svg)
-![Derivative of the small-scale dataset using Total Variation Regularized differentiation (where Gaussian noise SD=0.05).\label{fig:dxdt}](/man/figures/README-plot-2.svg)
+![Example small-scale dataset values.\label{fig:data}](https://github.com/natbprice/tvdiff/blob/main/man/figures/README-plot-1.svg)
+![Derivative of the small-scale dataset using Total Variation Regularized differentiation (where Gaussian noise SD=0.05).\label{fig:dxdt}](https://github.com/natbprice/tvdiff/blob/main/man/figures/README-plot-2.svg)
 
 # References
