@@ -33,8 +33,9 @@ The Total Variation Regularized Differentiation algorithm has been applied to nu
 
 # Example implementation of small-scale total variation regularized differentiation  
 This example uses a [small-scale dataset](/data-raw/smalldemodata.csv) which is based on the function  
-![f(x) = \\mid x - 0.5\\mid](https://latex.codecogs.com/png.latex?f%28x%29%20%3D%20%5Cmid%20x%20-%200.5%20%5Cmid "f(x) = \\mid x - 0.5 \\mid")    
-with Gaussian noise of standard deviation 0.05 ( \autoref{fig:data}). The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation [@chartrand2011numerical]. A prediction of the original function is obtained from the estimated derivative through numerical integration (\autoref{fig:dxdt}). The code for obtaining the figures in this example is provided in a [vignette](/vignettes/example.Rmd).
+\begin{equation}\label{eq:smalldata}
+f(x) = \\mid x - 0.5\\mid
+\end{equation} with Gaussian noise of standard deviation 0.05 ( \autoref{fig:data}). The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation [@chartrand2011numerical]. A prediction of the original function is obtained from the estimated derivative through numerical integration (\autoref{fig:dxdt}). The code for obtaining the figures in this example is provided in a [vignette](/vignettes/example.Rmd).
 
 
 # Figures 
