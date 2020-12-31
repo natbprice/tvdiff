@@ -4,6 +4,7 @@ tags:
   - machine learning
   - differentiation
   - clustering
+  - noisy data
 authors:
  - name: Nathaniel B Price
    orcid: 0000-0002-6450-617X
@@ -15,11 +16,11 @@ authors:
    orcid: 0000-0001-9294-2588
    affiliation: 1
 affiliations:
- - name: School of Natural Resources, University of Nebraska-Lincoln
+ - name: School of Natural Resources, University of Nebraska-Lincoln, Lincoln, NE
    index: 1
- - name: Nebraska Cooperative Fish and Wildlife Research Unit, University of Nebraska-Lincoln
+ - name: Nebraska Cooperative Fish and Wildlife Research Unit, University of Nebraska-Lincoln, Lincoln, NE
    index: 2
- - name: Core Science Systems Science Analytics and Synthesis, U.S. Geological Survey
+ - name: Core Science Systems Science Analytics and Synthesis, U.S. Geological Survey, Lakewood, CO
    index: 3
 date: 25 February 2020
 bibliography: paper.bib
@@ -28,7 +29,7 @@ bibliography: paper.bib
 # Summary   
 The **tvdiff** package is an R translation of the Matlab implementation of the Total Variation Regularized Numerical Differentiation algorithm [@chartrand2011numerical]. This algorithm is also available as Python code [@tvregdiff]. Our package, `tvdiff`, comprises a single function, [__TVRegDiffR__](https://github.com/natbprice/tvdiff/blob/master/R/TVRegDiffR.R). 
 
-The original publication [@chartrand2011numerical] presents two approaches to using this algorithm, a 'small-scale' and a 'large-scale'. The 'large-scale' implementation is extremely computationally expensive, and is not implemented in this wrapper. We have included, however, both the small-scale and large-scale datasets used for each approach (small-scale, large-scale) in @chartrand2011numerical. We present package functionality using the small-scale data originally published in @chartrand2011numerical.
+The original publication [@chartrand2011numerical] presents two approaches to using this algorithm: 'small-scale' and 'large-scale'. The 'large-scale' implementation is extremely computationally expensive, and is therefore not implemented in this package. We do, however provide both the small-scale and large-scale datasets used by @chartrand2011numerical. This package comprises all functionality for the small-scale methods as originally published in @chartrand2011numerical.
 
 # Example using 'smalldemodata'  
 This example uses a [small-scale dataset](/data-raw/smalldemodata.csv) which is based on the function  
