@@ -40,13 +40,16 @@ This package is based on the Matlab implementation of the Total Variation Regula
 ## Installation
 
 The **tvdiff** package is currently only available from Github.
-
 ```{r install_package, eval = FALSE}
-# Install development version from GitHub (requires devtools package)
+# Install development version from GitHub (install function requires devtools package)
 devtools::install_github("natbprice/tvdiff")
 ```
 
-**macOS:** See [instructions](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/) regarding R compiler tools for Rcpp
+__Installation and use requirements__:
+- R v. 4.0.1+
+- Fortran
+- _For mac OS users_: see [instructions](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/) regarding R compiler tools for R package **Rcpp**
+
 
 ## Example
 A simple example based on the function $f(x) = \mid x - 0.5 \mid$ with Gaussian noise of standard deviation 0.05. The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation. A prediction of the original function is obtained from the estimated derivative through numerical integration.
