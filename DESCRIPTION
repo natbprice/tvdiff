@@ -5,7 +5,7 @@ Version: 0.0.9000
 Authors@R: c(
     person("Nathaniel", "Price", email = "natbprice@gmail.com", role = c("aut", "cre"),
     comment= c(ORCID = "0000-0002-6450-617X")),
-    person("Jessica", "Burnett", email = "jessicaleighburnett@gmail.com", role = c("aut"))
+    person("Jessica", "Burnett", email = "jburnett@usgs.gov", role = c("aut"), comment= c(ORCID = "0000-0002-0896-5099"))
     )
 Description: Numerical differentiation of noisy, nonsmooth data based on 
     Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand.
