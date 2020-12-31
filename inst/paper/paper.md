@@ -22,7 +22,7 @@ affiliations:
    index: 2
  - name: Core Science Systems Science Analytics and Synthesis, U.S. Geological Survey, Lakewood, CO
    index: 3
-date: 25 February 2020
+date: 31 December 2020
 bibliography: paper.bib
 ---
 
