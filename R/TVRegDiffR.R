@@ -63,7 +63,7 @@
 #'   ep = 1e-6,
 #'   dx = dx
 #' )
-#' dydx <- dydx[-1]
+#' dydx <- as.vector(dydx[-1])
 #'
 #' @author
 #' R translation: Nathaniel Price  (\email{natbprice@@gmail.com})

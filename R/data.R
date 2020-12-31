@@ -32,11 +32,11 @@
 
 #' Large demo dataset
 #'
-#' "Data obtained from a whole-room calorimeter, courtesy of Edward L. Melanson
+#' \dquote{Data obtained from a whole-room calorimeter, courtesy of Edward L. Melanson
 #' of the University of Colorado Denver. The metabolic rate of a subject within the
 #' calorimeter can be determined via respirometry, the measurement of oxygen consumption,
 #' and carbon dioxide production within the room." "The data consists of samples
-#' taken every second for most of a day, for a total of 82,799 samples."
+#' taken every second for most of a day, for a total of 82,799 samples.}. Statement quoted from @chartrand2011numerical.
 #'
 #' @format A data frame with 82,799 rows and 2 variables:
 #' \describe{
