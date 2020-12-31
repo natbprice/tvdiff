@@ -6,7 +6,7 @@ tags:
   - clustering
   - noisy data
 authors:
- - name: Nathaniel B Price
+ - name: Nathaniel B Price^[Corresponding author]
    orcid: 0000-0002-6450-617X
    affiliation: 1
  - name: Jessica L. Burnett
