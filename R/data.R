@@ -1,7 +1,7 @@
 #' Toy problem
 #'
-#' A test dataset based on the piecewise function \eqn{f(x) = (x+2)^2} when \eqn{x<0} and
-#' \eqn{f(x) = (x-2)^2} when \eqn{x>0} with Gaussian noise with a standard deviation of 0.5.
+#' A test dataset based on the piecewise function \eqn{f(x) = (x+2)^2+\epsilon} when \eqn{x<0} and
+#' \eqn{f(x) = (x-2)^2+\epsilon} when \eqn{x>0} with Gaussian noise with a standard deviation of 0.5.
 #'
 #' @format A data frame with 100 rows and 4 variables:
 #' \describe{
@@ -16,7 +16,7 @@
 #' Small demo dataset
 #'
 #' A test dataset based on the function \eqn{f(x) = |x-0.5|} with Gaussian noise
-#' with a standard deviation of 0.05.
+#' with a standard deviation of 0.05 (i.e., \code{abs(x-0.5)+rnorm(length(x), mean=0, sd = 0.05)}).
 #'
 #' @format A data frame with 100 rows and 3 variables:
 #' \describe{

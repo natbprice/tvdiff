@@ -1,7 +1,7 @@
 #' Total Variation Regularized Numerical Differentiation (TVDiff)
 #'
-#' Estimate the derivative of noisy data using total variation regularized
-#' differentiation.
+#' Estimate the derivative of noisy data using the Total Variation Regularized
+#' Differentiation [@chartrand2011numerical].
 #'
 #' C++ code for preconditioned conjugate gradient method adapted from
 #' \code{cPCG::pcgsolve}
@@ -9,21 +9,21 @@
 #' @param data Vector of data to be differentiated.
 #' @param iter Number of iterations to run the main loop. A stopping condition
 #' based on the norm of the gradient vector g below would be an easy
-#' modification.  No default value.
+#' modification.  There is no default value.
 #' @param alph Regularization parameter.  This is the main parameter
 #' to fiddle with.  Start by varying by orders of magnitude until reasonable
 #' results are obtained.  A value to the nearest power of 10 is usally adequate.
-#' No default value.  Higher values increase regularization strenght and improve
+#' There is no deafault value.  Higher values increase regularization strenght and improve
 #' conditioning.
 #' @param u0 Initialization of the iteration.  Default value is the naive
 #' derivative (without scaling), of appropriate length (this being different
 #' for the two methods). Although the solution is theoretically independent of
 #' the intialization, a poor choice can exacerbate conditioning issues when the
 #' linear system is solved.
-#' @param scale 'large' or 'small' (case insensitive).  Default is 'small'.
-#' 'small' has somewhat better boundary behavior, but becomes unwieldly for data
-#' larger than 1000 entries or so.  'large' has simpler numerics but is more
-#' efficient for large-scale problems.  'large' is more readily modified for
+#' @param scale \code{large} or \code{small} (case insensitive).  Default is \code{small}.
+#' \code{small} has somewhat better boundary behavior, but becomes unwieldly for data
+#' larger than 1000 entries or so. \code{large} has simpler numerics but is more
+#' efficient for large-scale problems.  \code{large}  is more readily modified for
 #' higher-order derivatives, since the implicit differentiation matrix is square.
 #' @param ep Parameter for avoiding division by zero.  Default value is 1e-6.
 #' Results should not be very sensitive to the value.  Larger values improve
@@ -33,10 +33,10 @@
 #' Default is the reciprocal of the data size.
 #' @param plotflag Flag whether to display plot at each iteration. Default is 0
 #'  (no).  Useful, but adds significant running time.
-#' @param tol R Version Only: Tolerance passed to preconditiond conjugate
-#' gradient solver
-#' @param maxit R Version Only: Maximum iterations passed to
-#' preconditiond conjugate gradient solver
+#' @param tol Tolerance passed to preconditiond conjugate
+#' gradient solver.
+#' @param maxit Maximum iterations passed to
+#' preconditiond conjugate gradient solver.
 #'
 #' @return Estimate of the regularized derivative of data.  Due to different
 #' grid assumptions, length( u ) = length( data ) + 1 if scale = 'small',
