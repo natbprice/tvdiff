@@ -37,8 +37,8 @@ This example uses a [small-scale dataset](/data-raw/smalldemodata.csv) which is 
 with Gaussian noise of standard deviation 0.05 ( \autoref{fig:data}). The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation [@chartrand2011numerical]. A prediction of the original function is obtained from the estimated derivative through numerical integration (\autoref{fig:dxdt}). The code for obtaining the figures in this example is provided in a [vignette](/vignettes/example.Rmd).
 
 
+# Figures 
 
-Figures can be included like this:
 ![Example small-scale dataset values.\label{fig:data}](/man/figures/README-plot-1.svg)
 ![Derivative of the small-scale dataset using Total Variation Regularized differentiation (where Gaussian noise SD=0.05).\label{fig:dxdt}](/man/figures/README-plot-2.svg)
 
