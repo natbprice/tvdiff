@@ -47,8 +47,8 @@ devtools::install_github("natbprice/tvdiff")
 
 __Installation and use requirements__:
 - R v. 4.0.1+
-- Fortran
-- _For mac OS users_: see [instructions](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/) regarding R compiler tools for R package **Rcpp**
+- C++ compiler
+- Mac OS users will likely need to install GFortran, unless previously installed. See [here](https://cran.r-project.org/bin/macosx/tools/) for most recent binares (archived versions are unlikely to be compatible). See [here](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/) for further discussion regarding R compiler tools for R package **Rcpp**.
 
 
 ## Example

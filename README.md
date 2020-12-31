@@ -8,7 +8,6 @@
 status](https://travis-ci.org/natbprice/tvdiff.svg?branch=master)](https://travis-ci.org/natbprice/tvdiff)
 [![Coverage
 status](https://codecov.io/gh/natbprice/tvdiff/branch/master/graph/badge.svg)](https://codecov.io/github/natbprice/tvdiff?branch=master)
-[![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 
 The **tvdiff** package is a solution to the problem of how to estimate
 the rate of change (i.e., derivative) when available data is noisy and
@@ -25,16 +24,22 @@ conjugate method based on the cPCG package. See
 
 ## Installation
 
-The **tvdiff** package is currently only available from Github.
+The **tvdiff** package is currently only available from
+Github.
 
 ``` r
-# Install development version from GitHub (requires devtools package)
+# Install development version from GitHub (install function requires devtools package)
 devtools::install_github("natbprice/tvdiff")
 ```
 
-**macOS:** See
-[instructions](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/)
-regarding R compiler tools for Rcpp
+**Installation and use requirements**: - R v. 4.0.1+ - C++ compiler -
+Mac OS users will likely need to install GFortran, unless previously
+installed. See [here](https://cran.r-project.org/bin/macosx/tools/) for
+most recent binares (archived versions are unlikely to be compatible).
+See
+[here](https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/)
+for further discussion regarding R compiler tools for R package
+**Rcpp**.
 
 ## Example
 
@@ -94,12 +99,10 @@ pred <- obs[1] + cumsum(dydx*dx)
 
 ### Plot results
 
-For this simple example we can compare the estimates to the true values.
+For this simple example we can compare the estimates to the true
+values.
 
 <img src= "./man/figures/README-plot_results-1.svg"><img src= "./man/figures/README-plot_results-2.svg">
-
-## Acknowledgements
-This software is preliminary or provisional and is subject to revision. It is being provided to meet the need for timely best science. The software has not received final approval by the U.S. Geological Survey (USGS). No warranty, expressed or implied, is made by the USGS or the U.S. Government as to the functionality of the software and related material nor shall the fact of release constitute any such warranty. The software is provided on the condition that neither the USGS nor the U.S. Government shall be held liable for any damages resulting from the authorized or unauthorized use of the software.
 
 ## References
 
