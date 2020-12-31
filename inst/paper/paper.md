@@ -32,7 +32,7 @@ The **tvdiff** package is an R translation of the Matlab implementation of the T
 # Example implementation of small-scale total variation regularized differentiation  
 This example uses a [small-scale dataset](/data-raw/smalldemodata.csv) which is based on the function  
 ![f(x) = \\mid x - 0.5\\mid](https://latex.codecogs.com/png.latex?f%28x%29%20%3D%20%5Cmid%20x%20-%200.5%20%5Cmid "f(x) = \\mid x - 0.5 \\mid")    
-with Gaussian noise of standard deviation 0.05. The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation. A prediction of the original function is obtained from the estimated derivative through numerical integration. The code for obtaining the figures in this example is provided in a [vignette](/vignettes/example.Rmd).
+with Gaussian noise of standard deviation 0.05 (Figure top). The derivative is estimated from the noisy observations using Total Variation Regularized Differentiation [@chartrand2011numerical]. A prediction of the original function is obtained from the estimated derivative through numerical integration (Figure bottom). The code for obtaining the figures in this example is provided in a [vignette](/vignettes/example.Rmd).
 
 <img src= "/man/figures/README-plot-1.svg"><img src= "/man/figures/README-plot-2.svg">
 
