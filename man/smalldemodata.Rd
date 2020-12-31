@@ -4,12 +4,14 @@
 \name{smalldemodata}
 \alias{smalldemodata}
 \title{Small demo dataset}
-\format{A data frame with 100 rows and 3 variables:
+\format{
+A data frame with 100 rows and 3 variables:
 \describe{
   \item{x}{\code{seq(0, 1, length.out = 100)}}
   \item{true}{\code{abs(x - 0.5)}}
   \item{obs}{\code{abs(x - 0.5) + rnorm(length(x), mean = 0 , sd = 0.05)}}
-}}
+}
+}
 \source{
 \url{https://sites.google.com/site/dnartrahckcir/home/tvdiff-code}
 }

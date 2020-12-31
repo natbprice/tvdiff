@@ -4,8 +4,18 @@
 \alias{TVRegDiffR}
 \title{Total Variation Regularized Numerical Differentiation (TVDiff)}
 \usage{
-TVRegDiffR(data, iter, alph, u0 = NULL, scale = "small", ep = 1e-06,
-  dx = 1/length(data), plotflag = 0, tol = 1e-06, maxit = 1000)
+TVRegDiffR(
+  data,
+  iter,
+  alph,
+  u0 = NULL,
+  scale = "small",
+  ep = 1e-06,
+  dx = 1/length(data),
+  plotflag = 0,
+  tol = 1e-06,
+  maxit = 1000
+)
 }
 \arguments{
 \item{data}{Vector of data to be differentiated.}

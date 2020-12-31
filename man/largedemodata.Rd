@@ -4,11 +4,13 @@
 \name{largedemodata}
 \alias{largedemodata}
 \title{Large demo dataset}
-\format{A data frame with 82,799 rows and 2 variables:
+\format{
+A data frame with 82,799 rows and 2 variables:
 \describe{
   \item{x}{seconds}
   \item{obs}{observed measurement}
-}}
+}
+}
 \source{
 \url{https://sites.google.com/site/dnartrahckcir/home/tvdiff-code}
 }

@@ -4,13 +4,15 @@
 \name{toyproblem}
 \alias{toyproblem}
 \title{Toy problem}
-\format{A data frame with 100 rows and 4 variables:
+\format{
+A data frame with 100 rows and 4 variables:
 \describe{
   \item{x}{\code{seq(-4, 4, length.out = 100)}}
   \item{y_true}{true value}
   \item{y_obs}{observation with noise}
   \item{dydx_true}{true derivative}
-}}
+}
+}
 \usage{
 toyproblem
 }
