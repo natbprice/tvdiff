@@ -9,7 +9,7 @@ Authors@R: c(
     )
 Description: Numerical differentiation of noisy, nonsmooth data based on 
     Total Variation Regularized Numerical Differentiation algorithm by Rick Chartrand.
-License: MIT + file LICENSE
+License: CC0
 Encoding: UTF-8
 LazyData: true
 Suggests: 
