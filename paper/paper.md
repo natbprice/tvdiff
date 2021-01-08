@@ -44,3 +44,6 @@ f(x) = \\mid x - 0.5\\mid
 ![Derivative of the small-scale dataset using Total Variation Regularized differentiation (where Gaussian noise SD=0.05).\label{fig:dxdt}](https://raw.githubusercontent.com/natbprice/tvdiff/main/man/figures/README-plot-2.svg)
 
 # References
+
+# Disclaimer
+This draft manuscript is distributed solely for purposes of scientific peer review. Its content is deliberative and predecisional, so it must not be disclosed or released by reviewers. Because the manuscript has not yet been approved for publication by the U.S. Geological Survey (USGS), it does not represent any official USGS finding or policy.
